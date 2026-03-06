@@ -298,7 +298,7 @@
                     </label>
                     
                     <div class="dl-upload-zone" onclick="document.getElementById('file').click()">
-                        <input type="file" name="file" id="file" style="display: none;" onchange="updateFileName(this)">
+                        <input type="file" name="file" id="file" style="display: none;" onchange="updateFileName(this)" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
                         
                         <div class="dl-upload-icon-wrap">
                             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -311,7 +311,7 @@
                         </div>
                         <p style="font-size: .85rem; color: #6B7280; font-weight: 500;">
                             Cliquez ici pour sélectionner un fichier <br>
-                            <span style="font-size: .75rem; color: #9CA3AF;">(PDF, JPG, PNG, DOC - Max 10Mo)</span>
+                            <span style="font-size: .75rem; color: #9CA3AF;">(PDF, JPG, PNG, DOC, DOCX - Max 10Mo)</span>
                         </p>
 
                         @if($existingLog && $existingLog->file_path)

@@ -201,7 +201,8 @@
                 <div style="margin-bottom: 28px;">
                     <label class="dl-label">Pièce jointe (Optionnelle)</label>
                     <div class="dl-upload-zone" onclick="document.getElementById('file').click()">
-                        <input type="file" name="file" id="file" style="display: none;" onchange="updateFileName(this)">
+                        <input type="file" name="file" id="file" style="display: none;" onchange="updateFileName(this)"
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
                         <span id="file-name">Cliquez pour joindre un document</span>
                         @if($existingLog && $existingLog->file_path)
                             <div style="margin-top:10px; color:var(--primary);">

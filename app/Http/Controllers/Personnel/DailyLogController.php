@@ -51,7 +51,7 @@ class DailyLogController extends Controller
     {
         $request->validate([
             'content' => 'required_without:file|nullable|string|min:5',
-            'file' => 'required_without:content|nullable|file|max:10240', // 10MB max
+            'file' => 'required_without:content|nullable|file|mimes:pdf,jpg,png,doc,docx|max:10240', // 10MB max
             'linked_task_ids' => 'nullable|array',
             'linked_task_ids.*' => 'integer|exists:tasks,id',
             'task_statuses' => 'nullable|array',
