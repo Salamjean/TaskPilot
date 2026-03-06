@@ -15,7 +15,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $projects = Project::with(['tasks', 'members'])->latest()->get();
+        $projects = Project::with(['tasks', 'members'])
+            ->where('status', '!=', 'termine')
+            ->latest()
+            ->get();
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
         return view($prefix . '.tasks.index', compact('projects'));
     }

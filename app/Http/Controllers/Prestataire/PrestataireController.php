@@ -113,7 +113,9 @@ class PrestataireController extends Controller
     // ─── Tâches ──────────────────────────────────────────────────────────────
     public function tasks()
     {
-        $projects = Project::with(['tasks', 'members'])->get();
+        $projects = Project::with(['tasks', 'members'])
+            ->where('status', '!=', 'termine')
+            ->get();
         return view('prestataire.tasks.index', compact('projects'));
     }
 
