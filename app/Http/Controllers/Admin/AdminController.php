@@ -29,7 +29,15 @@ class AdminController extends Controller
         $todoTasks = Task::where('status', 'a_faire')->count();
         $lateTasks = Task::where('status', '!=', 'termine')
             ->whereNotNull('due_date')
-            ->where('due_date', '<', now())
+            ->where(function ($query) {
+                // Si la date d'échéance est passée (avant aujourd'hui)
+                $query->where('due_date', '<', now()->startOfDay())
+                    // OU si c'est aujourd'hui et qu'il est plus de 17h
+                    ->orWhere(function ($q) {
+                    $q->whereDate('due_date', now()->toDateString())
+                        ->whereRaw('HOUR(NOW()) >= 17');
+                });
+            })
             ->count();
 
         $totalLogs = DailyLog::count();
@@ -80,7 +88,13 @@ class AdminController extends Controller
         $latestTasks = Task::with(['assignee', 'project'])
             ->where('status', '!=', 'termine')
             ->whereNotNull('due_date')
-            ->where('due_date', '<', now())
+            ->where(function ($query) {
+                $query->where('due_date', '<', now()->startOfDay())
+                    ->orWhere(function ($q) {
+                        $q->whereDate('due_date', now()->toDateString())
+                            ->whereRaw('HOUR(NOW()) >= 17');
+                    });
+            })
             ->latest('due_date')->take(6)->get();
         $recentLogs = DailyLog::with('user')->latest('date')->take(4)->get();
 

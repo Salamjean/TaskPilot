@@ -63,7 +63,7 @@ class DailyLogController extends Controller
 
         $today = Carbon::today()->toDateString();
         $data = [
-            'content' => $request->content,
+            'content' => $request->input('content'),
             'linked_task_ids' => $request->linked_task_ids ?? [],
         ];
 

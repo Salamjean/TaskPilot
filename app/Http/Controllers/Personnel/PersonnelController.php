@@ -28,11 +28,17 @@ class PersonnelController extends Controller
         $lateTasks = Task::where('assigned_to', $user->id)
             ->where('status', '!=', 'termine')
             ->whereNotNull('due_date')
-            ->where('due_date', '<', now())
+            ->where(function ($query) {
+                $query->where('due_date', '<', now()->startOfDay())
+                    ->orWhere(function ($q) {
+                        $q->whereDate('due_date', now()->toDateString())
+                            ->whereRaw('HOUR(NOW()) >= 17');
+                    });
+            })
             ->count();
         $completedToday = Task::where('assigned_to', $user->id)
             ->where('status', 'termine')
-            ->whereDate('completed_at', $today)
+            ->whereDate('completed_at', now()->toDateString())
             ->count();
 
         // Progression personnelle
@@ -40,7 +46,7 @@ class PersonnelController extends Controller
 
         // ── Rapports ────────────────────────────────────────────────────────
         $totalReports = DailyLog::where('user_id', $user->id)->count();
-        $todayReport = DailyLog::where('user_id', $user->id)->whereDate('date', $today)->first();
+        $todayReport = DailyLog::where('user_id', $user->id)->whereDate('date', now()->toDateString())->first();
 
         // ── Temps travaillé ce mois ─────────────────────────────────────────
         $monthAttendances = Attendance::where('user_id', $user->id)

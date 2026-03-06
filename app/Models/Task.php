@@ -46,9 +46,12 @@ class Task extends Model
      */
     public function isLate(): bool
     {
-        return $this->due_date
-            && $this->due_date->isPast()
-            && $this->status !== 'termine';
+        if (!$this->due_date || $this->status === 'termine') {
+            return false;
+        }
+
+        // Le retard est effectif après 17h00 le jour de l'échéance
+        return now()->isAfter($this->due_date->copy()->setTime(17, 0, 0));
     }
 
     /**

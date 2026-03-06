@@ -200,7 +200,7 @@
         <input type="date" name="date" class="dl-filter-input" value="{{ request('date') }}" title="Filtrer par date">
         <select name="user_id" class="dl-filter-input">
             <option value="">— Tout le personnel —</option>
-            @foreach($personnelUsers as $u)
+            @foreach($filterableUsers as $u)
                 <option value="{{ $u->id }}" {{ request('user_id') == $u->id ? 'selected' : '' }}>
                     {{ $u->prenom }} {{ $u->name }}
                 </option>
@@ -329,19 +329,19 @@
             let tasksHtml = '';
             if (log.tasks && log.tasks.length > 0) {
                 tasksHtml = `<div style="margin-top:16px;">
-                            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
-                            <div style="display:flex;flex-direction:column;gap:6px;">`;
+                                <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
+                                <div style="display:flex;flex-direction:column;gap:6px;">`;
                 log.tasks.forEach(t => {
                     let badge = t.done
                         ? `<span style="font-size:.7rem;font-weight:700;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:20px;">✓ Terminée</span>`
                         : `<span style="font-size:.7rem;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:20px;">${t.status}</span>`;
                     tasksHtml += `<div style="display:flex;align-items:center;justify-content:space-between;background:#F9FAFB;padding:8px 12px;border-radius:10px;border:1px solid #E5E7EB;">
-                                <div>
-                                    <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
-                                    <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
-                                </div>
-                                ${badge}
-                            </div>`;
+                                    <div>
+                                        <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
+                                        <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
+                                    </div>
+                                    ${badge}
+                                </div>`;
                 });
                 tasksHtml += `</div></div>`;
             }
@@ -349,11 +349,11 @@
             Swal.fire({
                 title: `<span style="font-size:.85rem;color:#6B7280;font-weight:600;">${log.user}</span><br><span style="font-size:1rem;">📅 ${log.date}</span>`,
                 html: `
-                            <div style="text-align:left;">
-                                <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content}</div>
-                                ${tasksHtml}
-                            </div>
-                        `,
+                                <div style="text-align:left;">
+                                    <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content}</div>
+                                    ${tasksHtml}
+                                </div>
+                            `,
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: { popup: 'swal-dl-wide', title: 'swal-dl-title' },

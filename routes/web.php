@@ -93,8 +93,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin,responsa
     Route::patch('/tasks/task/{task}/reschedule', [TaskController::class, 'reschedule'])->name('tasks.reschedule');
     Route::delete('/tasks/task/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
-    // Rapports journaliers (lecture seule pour l'admin et responsable)
+    // Rapports journaliers
     Route::get('/daily-logs', [AdminDailyLogController::class, 'index'])->name('daily-logs.index');
+    Route::get('/daily-logs/create', [AdminDailyLogController::class, 'create'])->name('daily-logs.create');
+    Route::post('/daily-logs', [AdminDailyLogController::class, 'store'])->name('daily-logs.store');
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');

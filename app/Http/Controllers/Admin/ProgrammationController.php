@@ -25,7 +25,7 @@ class ProgrammationController extends Controller
     public function edit(Project $project)
     {
         $project->load('members');
-        $users = User::where('role', 'personnel')
+        $users = User::whereIn('role', ['personnel', 'admin', 'responsable'])
             ->orderBy('prenom')
             ->get();
         $assignedIds = $project->members->pluck('id')->toArray();

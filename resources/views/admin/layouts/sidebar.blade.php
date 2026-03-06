@@ -130,7 +130,7 @@
         Tableau de bord
     </a>
 
-    
+
 
     <a href="{{ route('admin.tasks.index') }}"
         class="nav-item {{ request()->routeIs('admin.tasks*') ? 'active' : '' }}">
@@ -141,8 +141,17 @@
         Tâches
     </a>
 
+    <a href="{{ route('admin.daily-logs.create') }}"
+        class="nav-item {{ request()->routeIs('admin.daily-logs.create') ? 'active' : '' }}">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+        Rédiger mon rapport
+    </a>
+
     <a href="{{ route('admin.daily-logs.index') }}"
-        class="nav-item {{ request()->routeIs('admin.daily-logs*') ? 'active' : '' }}">
+        class="nav-item {{ request()->routeIs('admin.daily-logs.index') ? 'active' : '' }}">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
             <rect x="9" y="3" width="6" height="4" rx="1" />
@@ -184,7 +193,7 @@
         Projets
     </a>
 
-    
+
 
     <a href="{{ route('admin.attendances.index') }}"
         class="nav-item {{ request()->routeIs('admin.attendances*') ? 'active' : '' }}">

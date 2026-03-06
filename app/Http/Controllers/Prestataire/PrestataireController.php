@@ -23,7 +23,13 @@ class PrestataireController extends Controller
         $todoTasksCount = \App\Models\Task::where('status', 'a_faire')->count();
         $lateTasksCount = \App\Models\Task::where('status', '!=', 'termine')
             ->whereNotNull('due_date')
-            ->where('due_date', '<', now())
+            ->where(function ($query) {
+                $query->where('due_date', '<', now()->startOfDay())
+                    ->orWhere(function ($q) {
+                        $q->whereDate('due_date', now()->toDateString())
+                            ->whereRaw('HOUR(NOW()) >= 17');
+                    });
+            })
             ->count();
         $totalUsers = User::count();
         $totalLogs = DailyLog::count();
@@ -62,7 +68,13 @@ class PrestataireController extends Controller
         $lateTasks = \App\Models\Task::with(['assignee', 'project'])
             ->where('status', '!=', 'termine')
             ->whereNotNull('due_date')
-            ->where('due_date', '<', now())
+            ->where(function ($query) {
+                $query->where('due_date', '<', now()->startOfDay())
+                    ->orWhere(function ($q) {
+                        $q->whereDate('due_date', now()->toDateString())
+                            ->whereRaw('HOUR(NOW()) >= 17');
+                    });
+            })
             ->latest('due_date')
             ->take(5)
             ->get();
