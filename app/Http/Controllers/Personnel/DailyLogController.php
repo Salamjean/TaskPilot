@@ -7,6 +7,7 @@ use App\Models\DailyLog;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class DailyLogController extends Controller
 {
@@ -62,14 +63,37 @@ class DailyLogController extends Controller
         ]);
 
         $today = Carbon::today()->toDateString();
+
+        // Find existing log to handle file deletion/replacement
+        $existingLog = DailyLog::where('user_id', auth()->id())
+            ->where('date', $today)
+            ->first();
+
         $data = [
             'content' => $request->input('content'),
             'linked_task_ids' => $request->linked_task_ids ?? [],
         ];
 
-        if ($request->hasFile('file')) {
-            $data['file_path'] = $request->file('file')->store('daily-logs', 'public');
+        // Handle file deletion
+        if ($request->has('delete_file') && $request->delete_file == '1') {
+            if ($existingLog && $existingLog->file_path) {
+                Storage::disk('public')->delete($existingLog->file_path);
+            }
+            $data['file_path'] = null; // Set file_path to null in data for updateOrCreate
         }
+
+        // Handle new file upload
+        if ($request->hasFile('file')) {
+            // Delete old file if it exists and is different from the one being uploaded
+            if ($existingLog && $existingLog->file_path) {
+                Storage::disk('public')->delete($existingLog->file_path);
+            }
+            $data['file_path'] = $request->file('file')->store('daily-logs', 'public');
+        } elseif (!isset($data['file_path']) && $existingLog && $existingLog->file_path) {
+            // If no new file is uploaded and no delete_file request, keep the existing file_path
+            $data['file_path'] = $existingLog->file_path;
+        }
+
 
         $log = DailyLog::updateOrCreate(
             ['user_id' => auth()->id(), 'date' => $today],
