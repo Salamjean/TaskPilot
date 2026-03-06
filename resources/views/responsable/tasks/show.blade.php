@@ -102,7 +102,7 @@
             background: #fff;
             border: 1px solid #E5E7EB;
             border-radius: 16px;
-            overflow: hidden;
+            overflow-x: auto;
             box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
         }
 
@@ -591,49 +591,49 @@
         function showTaskDetails(task) {
             let verifiedBadge = task.is_verified
                 ? `<div style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#ECFDF5;color:#059669;border-radius:20px;font-size:.8rem;font-weight:700;margin-top:10px;">
-                                                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                                    Vérifiée
-                                                    </div>`
+                                                         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                                        Vérifiée
+                                                        </div>`
                 : '';
 
             Swal.fire({
                 title: task.title,
                 html: `
-                                                    <div style="text-align:left;font-size:.9rem;color:#374151;margin-top:15px;line-height:1.6;">
-                                                        <div style="background:#F9FAFB;padding:15px;border-radius:12px;border:1px solid #E5E7EB;margin-bottom:15px;">
-                                                            <strong style="color:#1F2937;display:block;margin-bottom:6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">Description</strong>
-                                                            <div style="white-space:pre-wrap;">${task.description}</div>
-                                                        </div>
+                                                        <div style="text-align:left;font-size:.9rem;color:#374151;margin-top:15px;line-height:1.6;">
+                                                            <div style="background:#F9FAFB;padding:15px;border-radius:12px;border:1px solid #E5E7EB;margin-bottom:15px;">
+                                                                <strong style="color:#1F2937;display:block;margin-bottom:6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;">Description</strong>
+                                                                <div style="white-space:pre-wrap;">${task.description}</div>
+                                                            </div>
 
-                                                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px;">
-                                                            <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
-                                                                <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Assignée à</div>
-                                                                <div style="font-weight:600;">${task.assignee}</div>
+                                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px;">
+                                                                <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
+                                                                    <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Assignée à</div>
+                                                                    <div style="font-weight:600;">${task.assignee}</div>
+                                                                </div>
+                                                                <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
+                                                                    <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Statut</div>
+                                                                    <div style="font-weight:600;">${task.status}</div>
+                                                                </div>
+                                                                <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
+                                                                    <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Priorité</div>
+                                                                    <div style="font-weight:600;">${task.priority}</div>
+                                                                </div>
+                                                                <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
+                                                                    <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Échéance</div>
+                                                                    <div style="font-weight:600;">${task.due_date}</div>
+                                                                </div>
                                                             </div>
-                                                            <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
-                                                                <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Statut</div>
-                                                                <div style="font-weight:600;">${task.status}</div>
-                                                            </div>
-                                                            <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
-                                                                <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Priorité</div>
-                                                                <div style="font-weight:600;">${task.priority}</div>
-                                                            </div>
-                                                            <div style="background:#F9FAFB;padding:12px;border-radius:12px;border:1px solid #E5E7EB;">
-                                                                <div style="font-size:.75rem;color:#6B7280;text-transform:uppercase;font-weight:700;margin-bottom:4px;">Échéance</div>
-                                                                <div style="font-weight:600;">${task.due_date}</div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div style="font-size:.8rem;color:#6B7280;display:flex;justify-content:space-between;border-top:1px solid #E5E7EB;padding-top:10px;">
-                                                            <div>Créée le: <strong style="color:#374151;">${task.created_at}</strong></div>
-                                                            <div>Terminée le: <strong style="color:#374151;">${task.completed_at}</strong></div>
-                                                        </div>
+                                                            <div style="font-size:.8rem;color:#6B7280;display:flex;justify-content:space-between;border-top:1px solid #E5E7EB;padding-top:10px;">
+                                                                <div>Créée le: <strong style="color:#374151;">${task.created_at}</strong></div>
+                                                                <div>Terminée le: <strong style="color:#374151;">${task.completed_at}</strong></div>
+                                                            </div>
 
-                                                        <div style="text-align:center;">
-                                                            ${verifiedBadge}
+                                                            <div style="text-align:center;">
+                                                                ${verifiedBadge}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                `,
+                                                    `,
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: {
@@ -648,19 +648,19 @@
             Swal.fire({
                 title: '📅 Replanifier la tâche',
                 html: `
-                                                <div style="text-align:left;margin-top:10px;">
-                                                    <div style="font-size:.88rem;font-weight:600;color:#1F2937;background:#F9FAFB;padding:10px 14px;border-radius:10px;border:1px solid #E5E7EB;margin-bottom:16px;">
-                                                        ${taskTitle}
+                                                    <div style="text-align:left;margin-top:10px;">
+                                                        <div style="font-size:.88rem;font-weight:600;color:#1F2937;background:#F9FAFB;padding:10px 14px;border-radius:10px;border:1px solid #E5E7EB;margin-bottom:16px;">
+                                                            ${taskTitle}
+                                                        </div>
+                                                        <label style="font-size:.83rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Nouvelle date d'échéance <span style="color:#EF4444;">*</span></label>
+                                                        <input type="date" id="swal-reschedule-date"
+                                                            min="${new Date().toISOString().split('T')[0]}"
+                                                            style="width:100%;padding:10px 12px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:.9rem;color:#1F2937;outline:none;box-sizing:border-box;">
+                                                        <p style="font-size:.78rem;color:#6B7280;margin-top:10px;">
+                                                            ⚠️ La tâche sera remise à <strong>« À faire »</strong> et la vérification admin sera annulée.
+                                                        </p>
                                                     </div>
-                                                    <label style="font-size:.83rem;font-weight:700;color:#374151;display:block;margin-bottom:6px;">Nouvelle date d'échéance <span style="color:#EF4444;">*</span></label>
-                                                    <input type="date" id="swal-reschedule-date"
-                                                        min="${new Date().toISOString().split('T')[0]}"
-                                                        style="width:100%;padding:10px 12px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:.9rem;color:#1F2937;outline:none;box-sizing:border-box;">
-                                                    <p style="font-size:.78rem;color:#6B7280;margin-top:10px;">
-                                                        ⚠️ La tâche sera remise à <strong>« À faire »</strong> et la vérification admin sera annulée.
-                                                    </p>
-                                                </div>
-                                            `,
+                                                `,
                 showCancelButton: true,
                 confirmButtonText: 'Confirmer la replanification',
                 cancelButtonText: 'Annuler',
