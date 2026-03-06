@@ -169,6 +169,39 @@
             object-fit: cover;
         }
 
+        .tk-member-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #F8FAFC;
+            border: 1px solid #E5E7EB;
+            padding: 3px 10px 3px 3px;
+            border-radius: 20px;
+            font-size: .74rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .tk-member-badge .tk-av-sm {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .55rem;
+            color: #fff;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            flex-shrink: 0;
+        }
+
+        .tk-member-badge .tk-av-sm img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .tk-av-default {
             background: linear-gradient(135deg, var(--secondary), var(--accent));
         }
@@ -288,15 +321,19 @@
                         </div>
 
                         @if($project->members->isNotEmpty())
-                            <div class="tk-members">
-                                @foreach($project->members->take(5) as $m)
-                                    <div class="tk-av tk-av-default" title="{{ $m->prenom }}">
-                                        @if($m->profile_picture) <img src="{{ Storage::url($m->profile_picture) }}" alt="{{ $m->prenom }}">
-                                        @else {{ strtoupper(substr($m->prenom, 0, 1)) }} @endif
+                            <div class="tk-members" style="flex-wrap: wrap;">
+                                @foreach($project->members->take(4) as $m)
+                                    <div class="tk-member-badge" title="{{ $m->prenom }} {{ $m->name }}">
+                                        <div class="tk-av-sm">
+                                            @if($m->profile_picture) <img src="{{ Storage::url($m->profile_picture) }}" alt="{{ $m->prenom }}">
+                                            @else {{ strtoupper(substr($m->prenom, 0, 1)) }} @endif
+                                        </div>
+                                        <span>{{ $m->prenom }} {{ substr($m->name, 0, 1) }}.</span>
                                     </div>
                                 @endforeach
-                                <span class="tk-members-count">{{ $project->members->count() }}
-                                    membre{{ $project->members->count() > 1 ? 's' : '' }}</span>
+                                @if($project->members->count() > 4)
+                                    <span class="tk-member-badge" style="padding: 3px 10px; background: #F3F4F6;">+{{ $project->members->count() - 4 }}</span>
+                                @endif
                             </div>
                         @endif
                     </div>
