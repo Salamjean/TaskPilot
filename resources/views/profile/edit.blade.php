@@ -136,7 +136,12 @@
     <div class="prf-card">
         <div class="prf-head">
             <div class="prf-avatar">
-                {{ strtoupper(substr($user->prenom ?? $user->name, 0, 1)) }}
+                @if($user->profile_picture)
+                    <img src="{{ Storage::url($user->profile_picture) }}"
+                        style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                @else
+                    {{ strtoupper(substr($user->prenom ?? $user->name, 0, 1)) }}
+                @endif
             </div>
             <div>
                 <div class="prf-title">Mon Profil</div>
@@ -163,11 +168,18 @@
             </div>
         @endif
 
-        <form action="{{ route('profile.update') }}" method="POST" id="profileForm">
+        <form action="{{ route('profile.update') }}" method="POST" id="profileForm" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <input type="hidden" name="current_password" id="current_password_input">
+
+            <div class="prf-form-group">
+                <label>Photo de profil</label>
+                <input type="file" name="profile_picture" class="prf-input" accept="image/*" style="padding: 8px 16px;">
+                <p style="font-size: .75rem; color: #6B7280; mt: 4px;">Format recommandé: Carré (Max: 2MB)</p>
+                @error('profile_picture') <div class="prf-error">{{ $message }}</div> @enderror
+            </div>
 
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
                 <div class="prf-form-group">

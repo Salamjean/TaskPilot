@@ -377,7 +377,12 @@
         <div class="profile-wrap" id="profileWrap">
             <button class="profile-btn" id="profileBtn" type="button" aria-expanded="false">
                 <div class="profile-avatar" id="navAvatar">
-                    {{ strtoupper(substr(auth()->user()->prenom ?? auth()->user()->name, 0, 1)) }}
+                    @if(auth()->user()->profile_picture)
+                        <img src="{{ Storage::url(auth()->user()->profile_picture) }}"
+                            style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->prenom ?? auth()->user()->name, 0, 1)) }}
+                    @endif
                 </div>
                 <div class="profile-info">
                     <div class="profile-name" id="navName">

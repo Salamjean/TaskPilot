@@ -40,15 +40,28 @@ class ProfileController extends Controller
             'prenom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
-        // 3. Mise à jour
+        // 3. Mise à jour des infos de base
         $user->name = $request->name;
         $user->prenom = $request->prenom;
         $user->email = $request->email;
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
+        }
+
+        // 4. Gestion de la photo de profil
+        if ($request->hasFile('profile_picture')) {
+            // Supprimer l'ancienne photo si elle existe
+            if ($user->profile_picture && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->profile_picture)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Stocker la nouvelle photo
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $user->profile_picture = $path;
         }
 
         $user->save();
