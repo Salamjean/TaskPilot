@@ -129,9 +129,22 @@
             border-radius: 20px;
         }
 
-        .dl-today {
-            color: #047857;
-            background: #ECFDF5;
+        .dl-card {
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+        .dl-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
         }
     </style>
 
@@ -200,8 +213,8 @@
                             ->map(fn($t) => ['title' => $t->title, 'project' => $t->project->name ?? '—', 'status' => $t->statusLabel(), 'done' => $t->status === 'termine'])
                         : collect();
                 @endphp
-                <div
-                    style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.04);border-left:4px solid {{ $log->date->isToday() ? '#047857' : '#7E22CE' }};display:flex;flex-direction:column;gap:14px;">
+                <div class="dl-card" onclick="window.location='{{ route('prestataire.daily-logs.user-history', $log->user_id) }}'"
+                    style="border-left:4px solid {{ $log->date->isToday() ? '#047857' : '#7E22CE' }};">
                     <div style="display:flex;align-items:center;gap:10px;">
                         <div class="dl-avatar" style="width:38px;height:38px;font-size:.88rem;">
                             @if($log->user?->profile_picture)
@@ -253,7 +266,7 @@
                         @endif
                         <button type="button"
                             style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:linear-gradient(135deg,#7E22CE,#A855F7);color:#fff;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(126,34,206,.2);"
-                            onclick="showLog({{ json_encode([
+                            onclick="event.stopPropagation(); showLog({{ json_encode([
                         'user' => ($log->user?->prenom ?? '') . ' ' . ($log->user?->name ?? ''),
                         'date' => $log->date->translatedFormat('d M Y'),
                         'content' => $log->content,

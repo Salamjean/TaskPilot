@@ -137,4 +137,27 @@ class DailyLogController extends Controller
         return redirect()->route($prefix . '.daily-logs.index')
             ->with('success', 'Votre rapport du jour a été enregistré.');
     }
+
+    /**
+     * Historique des rapports pour un utilisateur spécifique.
+     */
+    public function userHistory(User $user)
+    {
+        $allLogs = DailyLog::where('user_id', $user->id)
+            ->with(['user'])
+            ->orderByDesc('date')
+            ->get();
+
+        $today = \Illuminate\Support\Carbon::today()->toDateString();
+        $todayLog = $allLogs->filter(function ($log) use ($today) {
+            return $log->date->toDateString() === $today;
+        })->first();
+
+        $historyLogs = $allLogs->filter(function ($log) use ($today) {
+            return $log->date->toDateString() !== $today;
+        });
+
+        $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
+        return view($prefix . '.daily-logs.user-history', compact('user', 'todayLog', 'historyLogs'));
+    }
 }

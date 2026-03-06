@@ -166,4 +166,21 @@ class PrestataireController extends Controller
         $users = User::orderBy('prenom')->paginate(15);
         return view('prestataire.users.index', compact('users'));
     }
+
+    /**
+     * Historique des rapports pour un utilisateur spécifique (pour prestataire).
+     */
+    public function userHistory(User $user)
+    {
+        $allLogs = DailyLog::where('user_id', $user->id)
+            ->with(['user'])
+            ->orderByDesc('date')
+            ->get();
+
+        $today = \Illuminate\Support\Carbon::today()->toDateString();
+        $todayLog = $allLogs->filter(fn($l) => $l->date->toDateString() === $today)->first();
+        $historyLogs = $allLogs->filter(fn($l) => $l->date->toDateString() !== $today);
+
+        return view('prestataire.daily-logs.user-history', compact('user', 'todayLog', 'historyLogs'));
+    }
 }

@@ -97,6 +97,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin,responsa
     Route::get('/daily-logs', [AdminDailyLogController::class, 'index'])->name('daily-logs.index');
     Route::get('/daily-logs/create', [AdminDailyLogController::class, 'create'])->name('daily-logs.create');
     Route::post('/daily-logs', [AdminDailyLogController::class, 'store'])->name('daily-logs.store');
+    Route::get('/daily-logs/user/{user}', [AdminDailyLogController::class, 'userHistory'])->name('daily-logs.user-history');
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
@@ -164,6 +165,7 @@ Route::prefix('responsable')->name('responsable.')->middleware(['auth', 'role:re
     Route::get('/daily-logs', [AdminDailyLogController::class, 'index'])->name('daily-logs.index');
     Route::get('/daily-logs/create', [AdminDailyLogController::class, 'create'])->name('daily-logs.create');
     Route::post('/daily-logs', [AdminDailyLogController::class, 'store'])->name('daily-logs.store');
+    Route::get('/daily-logs/user/{user}', [AdminDailyLogController::class, 'userHistory'])->name('daily-logs.user-history');
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
@@ -187,6 +189,7 @@ Route::prefix('prestataire')->name('prestataire.')->middleware(['auth', 'role:pr
 
     // Rapports journaliers (lecture seule)
     Route::get('/daily-logs', [PrestataireController::class, 'dailyLogs'])->name('daily-logs.index');
+    Route::get('/daily-logs/user/{user}', [PrestataireController::class, 'userHistory'])->name('daily-logs.user-history');
 
     // Utilisateurs (lecture seule)
     Route::get('/users', [PrestataireController::class, 'users'])->name('users.index');
