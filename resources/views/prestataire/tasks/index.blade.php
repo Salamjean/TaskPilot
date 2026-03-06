@@ -232,6 +232,10 @@
                                     <div class="pt-type">{{ $project->type }}</div>
                                 @endif
                             </div>
+                            <span
+                                style="margin-left:auto;align-self:flex-start;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:{{ $project->status === 'actif' ? '#ECFDF5' : ($project->status === 'en_pause' ? '#FFFBEB' : '#F3F4F6') }};color:{{ $project->status === 'actif' ? '#059669' : ($project->status === 'en_pause' ? '#D97706' : '#6B7280') }};">
+                                {{ $project->statusLabel() }}
+                            </span>
                         </div>
                         <div class="tk-progress-wrap">
                             <div class="tk-progress-info">
