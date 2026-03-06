@@ -82,6 +82,19 @@
             color: #6B7280;
         }
 
+        .pt-type {
+            font-size: .73rem;
+            color: #7E22CE;
+            background: #F3E8FF;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
+            border: 1px solid #E9D5FF;
+            margin-top: 4px;
+        }
+
         .tk-progress-wrap {
             margin-bottom: 14px;
         }
@@ -215,6 +228,9 @@
                             <div>
                                 <div class="tk-name">{{ $project->name }}</div>
                                 <div class="tk-company">{{ $project->company }}</div>
+                                @if($project->type)
+                                    <div class="pt-type">{{ $project->type }}</div>
+                                @endif
                             </div>
                         </div>
                         <div class="tk-progress-wrap">
