@@ -9,6 +9,24 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css" rel="stylesheet">
 
     <style>
+        :root {
+            --primary:
+                {{ $prefix === 'responsable' ? '#D97706' : '#1E3A8A' }}
+            ;
+            --secondary:
+                {{ $prefix === 'responsable' ? '#F59E0B' : '#3B82F6' }}
+            ;
+            --accent:
+                {{ $prefix === 'responsable' ? '#FFFBEB' : '#EFF6FF' }}
+            ;
+            --accent-border:
+                {{ $prefix === 'responsable' ? '#FEF3C7' : '#DBEAFE' }}
+            ;
+            --accent-text:
+                {{ $prefix === 'responsable' ? '#92400E' : '#1E40AF' }}
+            ;
+        }
+
         .history-header {
             background: #fff;
             border: 1px solid #E5E7EB;
@@ -32,7 +50,7 @@
             color: #fff;
             font-weight: 800;
             font-size: 1.6rem;
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -125,9 +143,9 @@
         }
 
         .dl-badge-file {
-            color: #0369A1;
-            background: #F0F9FF;
-            border-color: #E0F2FE;
+            color: var(--accent-text);
+            background: var(--accent);
+            border-color: var(--accent-border);
         }
 
         .dl-badge-tasks {
@@ -148,13 +166,18 @@
             font-size: .82rem;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: all .2s;
         }
 
+        .btn-view-log:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
         .today-banner {
-            background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
-            border: 1px solid #BFDBFE;
+            background: linear-gradient(135deg, var(--accent), var(--accent-border));
+            border: 1px solid var(--accent-border);
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 40px;
@@ -197,7 +220,8 @@
         </div>
         <div>
             <h2 style="font-size:1.5rem; font-weight:900; color:#111827; margin-bottom:4px;">{{ $user->prenom }}
-                {{ $user->name }}</h2>
+                {{ $user->name }}
+            </h2>
             <div style="display:flex; align-items:center; gap:10px;">
                 <span
                     style="font-size:.85rem; color:#6B7280; font-weight:600; text-transform:uppercase; letter-spacing:.5px;">{{ $user->role }}</span>
@@ -218,9 +242,10 @@
     @if($todayLog)
         <div class="today-banner">
             <div style="display:flex; align-items:flex-start; justify-content:space-between;">
-                <div style="font-size:1.2rem; font-weight:800; color:#1E40AF; display:flex; align-items:center; gap:10px;">
+                <div
+                    style="font-size:1.2rem; font-weight:800; color:var(--accent-text); display:flex; align-items:center; gap:10px;">
                     <span
-                        style="background:#2563EB; color:#fff; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                        style="background:var(--primary); color:#fff; width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center;">
                         <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -241,8 +266,9 @@
                 </button>
             </div>
             <div
-                style="background:#fff; border-radius:15px; padding:24px; border:1px solid #BFDBFE; color:#374151; font-size:1rem; line-height:1.8; white-space:pre-wrap;">
-                {{ $todayLog->content ?: 'Aucune description textuelle.' }}</div>
+                style="background:#fff; border-radius:15px; padding:24px; border:1px solid var(--accent-border); color:#374151; font-size:1rem; line-height:1.8; white-space:pre-wrap;">
+                {{ $todayLog->content ?: 'Aucune description textuelle.' }}
+            </div>
 
             <div style="display:flex; gap:15px;">
                 @if($todayLog->file_path)
@@ -360,19 +386,19 @@
             let tasksHtml = '';
             if (log.tasks && log.tasks.length > 0) {
                 tasksHtml = `<div style="margin-top:16px;">
-                                    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
-                                    <div style="display:flex;flex-direction:column;gap:6px;">`;
+                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
+                                        <div style="display:flex;flex-direction:column;gap:6px;">`;
                 log.tasks.forEach(t => {
                     let badge = t.done
                         ? `<span style="font-size:.7rem;font-weight:700;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:20px;">✓ Terminée</span>`
                         : `<span style="font-size:.7rem;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:20px;">${t.status}</span>`;
                     tasksHtml += `<div style="display:flex;align-items:center;justify-content:space-between;background:#F9FAFB;padding:8px 12px;border-radius:10px;border:1px solid #E5E7EB;">
-                                        <div>
-                                            <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
-                                            <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
-                                        </div>
-                                        ${badge}
-                                    </div>`;
+                                            <div>
+                                                <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
+                                                <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
+                                            </div>
+                                            ${badge}
+                                        </div>`;
                 });
                 tasksHtml += `</div></div>`;
             }
@@ -380,26 +406,26 @@
             Swal.fire({
                 title: `<span style="font-size:.85rem;color:#6B7280;font-weight:600;">${log.user}</span><br><span style="font-size:1rem;">📅 ${log.date}</span>`,
                 html: `
-                        <div style="text-align:left;">
-                            <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucun texte saisi.</i>'}</div>
-                            ${log.file_url ? `
-                                <div style="margin-top:16px; border-top:1px dashed #E5E7EB; padding-top:16px;">
-                                    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
-                                    <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#F0FDF4;padding:12px 16px;border-radius:12px;border:1px solid #A7F3D0;text-decoration:none;transition:transform .15s;">
-                                        <div style="width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.05);color:#047857;">
-                                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 10V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-4a2 2 0 00-2-2h-4"/></svg>
-                                        </div>
-                                         <div style="flex:1;">
-                                             <div style="font-size:.88rem;color:#047857;font-weight:700;">Consulter le document joint</div>
-                                             <div style="font-size:.72rem;color:#059669;opacity:.8;">Ouvrir dans un nouvel onglet</div>
-                                         </div>
-                                         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#047857" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                                     </a>
-                                 </div>
-                            ` : ''}
-                            ${tasksHtml}
-                        </div>
-                    `,
+                            <div style="text-align:left;">
+                                <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucun texte saisi.</i>'}</div>
+                                ${log.file_url ? `
+                                    <div style="margin-top:16px; border-top:1px dashed #E5E7EB; padding-top:16px;">
+                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
+                                        <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:12px;background:var(--accent);padding:12px 16px;border-radius:12px;border:1px solid var(--accent-border);text-decoration:none;transition:transform .15s;">
+                                            <div style="width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.05);color:var(--primary);">
+                                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 10V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-4a2 2 0 00-2-2h-4"/></svg>
+                                            </div>
+                                             <div style="flex:1;">
+                                                 <div style="font-size:.88rem;color:var(--accent-text);font-weight:700;">Consulter le document joint</div>
+                                                 <div style="font-size:.72rem;color:var(--accent-text);opacity:.8;">Ouvrir dans un nouvel onglet</div>
+                                             </div>
+                                             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--primary)" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                         </a>
+                                     </div>
+                                ` : ''}
+                                ${tasksHtml}
+                            </div>
+                        `,
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: { popup: 'swal-dl-wide', title: 'swal-dl-title' },
