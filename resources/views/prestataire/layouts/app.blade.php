@@ -47,11 +47,49 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+            overflow-x: auto;
+            min-width: 0;
         }
 
         .page-content {
             padding: 32px;
             flex: 1;
+        }
+
+        /* ── Mobile Overlay ── */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+            z-index: 150;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .app-body {
+                margin-left: 0;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+
+            /* Global Table Responsiveness */
+            .pi-table-wrap,
+            .dl-table-wrap,
+            [style*="overflow-x: auto"] {
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         @stack('styles')
@@ -62,6 +100,9 @@
 
 <body>
     <div class="app-wrapper">
+        {{-- Overlay pour mobile --}}
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         @include('prestataire.layouts.sidebar')
         <div class="app-body">
             @include('prestataire.layouts.navbar')
@@ -72,6 +113,19 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+        }
+
+        document.getElementById('sidebarOverlay')?.addEventListener('click', toggleSidebar);
+    </script>
 
     @if(session('success'))
         <script>

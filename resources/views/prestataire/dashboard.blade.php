@@ -596,6 +596,42 @@
             font-weight: 500;
         }
 
+        @media(max-width:960px) {
+            .db-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+                padding: 24px;
+            }
+
+            .db-banner-icon {
+                order: -1;
+            }
+
+            .db-stats-row {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+
+            .db-two,
+            .db-three {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:680px) {
+            .db-banner h1 {
+                font-size: 1.3rem;
+            }
+
+            .db-banner-left p {
+                font-size: .85rem;
+            }
+
+            .db-stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         /* ── Animations ── */
         @keyframes fadeUp {
             from {
@@ -1068,9 +1104,9 @@
                     const div = document.createElement('div');
                     div.className = 'db-legend-item';
                     div.innerHTML = `<span class="db-legend-dot" style="background:${colors[i]};"></span>
-                                     <span class="db-legend-label">${label}</span>
-                                     <span class="db-legend-val">${values[i]}</span>
-                                     <span class="db-legend-pct">&nbsp;${pct}%</span>`;
+                                         <span class="db-legend-label">${label}</span>
+                                         <span class="db-legend-val">${values[i]}</span>
+                                         <span class="db-legend-pct">&nbsp;${pct}%</span>`;
                     el.appendChild(div);
                 });
             }

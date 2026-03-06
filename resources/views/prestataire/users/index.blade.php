@@ -5,8 +5,8 @@
 
 @section('content')
 
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-        <h2 style="font-size:1.4rem;font-weight:800;color:var(--text);">Liste des collaborateurs</h2>
+    <div class="user-header">
+        <h2 style="font-size:1.4rem;font-weight:800;color:var(--text);margin:0;">Liste des collaborateurs</h2>
         {{-- Pas de bouton "Nouvel utilisateur" : lecture seule --}}
         <div style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#F3E8FF;color:#7E22CE;border:1px solid #E9D5FF;border-radius:10px;font-size:.8rem;font-weight:700;">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -16,6 +16,27 @@
             Lecture seule
         </div>
     </div>
+
+    <style>
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .user-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .user-header h2 {
+                font-size: 1.1rem !important;
+            }
+        }
+    </style>
 
     <div style="background:#fff;border:1px solid #E5E7EB;border-radius:18px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.04);">
         <div style="padding:20px 24px;border-bottom:1px solid #F3F4F6;background:#F8FAFC;display:flex;align-items:center;">

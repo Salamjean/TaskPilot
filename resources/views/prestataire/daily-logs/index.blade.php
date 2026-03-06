@@ -21,6 +21,18 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
         }
 
+        @media (max-width: 768px) {
+            .dl-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dl-filter-btn,
+            .dl-filter-reset {
+                text-align: center;
+            }
+        }
+
         .dl-filter-input {
             padding: 8px 14px;
             border: 1.5px solid #E5E7EB;
@@ -144,6 +156,14 @@
             <div class="dl-stat-value">{{ $totalCount }}</div>
         </div>
     </div>
+
+    <style>
+        @media (max-width: 640px) {
+            .dl-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 
     <form method="GET" class="dl-toolbar">
         <input type="date" name="date" class="dl-filter-input" value="{{ request('date') }}" title="Filtrer par date">

@@ -48,6 +48,8 @@
             flex-direction: column;
             min-height: 100vh;
             transition: margin-left 0.3s ease;
+            overflow-x: auto;
+            min-width: 0;
         }
 
         .page-content {

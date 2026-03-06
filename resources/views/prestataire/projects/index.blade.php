@@ -13,6 +13,20 @@
         {{-- Pas de bouton "Nouveau projet" : lecture seule --}}
     </div>
 
+    <style>
+        @media (max-width: 640px) {
+            .pi-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .pi-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
     @if($projects->isEmpty())
         <div class="pi-empty">
             <div class="pi-empty-ring">

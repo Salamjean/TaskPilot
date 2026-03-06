@@ -50,6 +50,8 @@
             flex-direction: column;
             min-height: 100vh;
             transition: margin-left 0.3s ease;
+            overflow-x: auto;
+            min-width: 0;
         }
 
         /* ── Contenu de la page ── */
@@ -86,12 +88,16 @@
             }
 
             /* Global Table Responsiveness */
-            .pi-table-wrap, .dl-table-wrap, [style*="overflow-x: auto"] {
+            .pi-table-wrap,
+            .dl-table-wrap,
+            [style*="overflow-x: auto"] {
                 -webkit-overflow-scrolling: touch;
             }
-            
+
             /* Global Header Adjustment */
-            .pi-header, .tk-header, .prog-header {
+            .pi-header,
+            .tk-header,
+            .prog-header {
                 flex-direction: column;
                 align-items: flex-start !important;
                 gap: 12px;
