@@ -78,6 +78,19 @@
             color: #6B7280;
         }
 
+        .pt-type {
+            font-size: .73rem;
+            color: var(--secondary);
+            background: #EFF6FF;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
+            border: 1px solid #DBEAFE;
+            margin-top: 4px;
+        }
+
         .prog-card-body {
             padding: 16px 20px;
         }
@@ -172,6 +185,9 @@
                         <div>
                             <div class="prog-name">{{ $project->name }}</div>
                             <div class="prog-company">{{ $project->company }}</div>
+                            @if($project->type)
+                                <div class="pt-type">{{ $project->type }}</div>
+                            @endif
                         </div>
                         <span
                             style="margin-left:auto;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:{{ $project->status === 'actif' ? '#ECFDF5' : ($project->status === 'en_pause' ? '#FFFBEB' : '#F3F4F6') }};color:{{ $project->status === 'actif' ? '#059669' : ($project->status === 'en_pause' ? '#D97706' : '#6B7280') }};">
