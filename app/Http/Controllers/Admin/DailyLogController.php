@@ -42,7 +42,7 @@ class DailyLogController extends Controller
 
         $personnelUsers = $filterableUsers;
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
-        return view($prefix . '.daily-logs.index', compact('logs', 'groupedLogs', 'filterableUsers', 'personnelUsers'));
+        return view($prefix . '.daily-logs.index', compact('logs', 'filterableUsers', 'personnelUsers'));
     }
 
     /**
