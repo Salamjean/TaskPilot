@@ -528,6 +528,17 @@
         }
 
         @media(max-width:960px) {
+            .pdb-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 24px;
+            }
+
+            .pdb-banner-icon {
+                order: -1;
+            }
+
             .pdb-three {
                 grid-template-columns: 1fr 1fr;
             }
@@ -542,6 +553,10 @@
             .pdb-two,
             .pdb-three {
                 grid-template-columns: 1fr;
+            }
+
+            .pdb-banner h1 {
+                font-size: 1.3rem;
             }
         }
 

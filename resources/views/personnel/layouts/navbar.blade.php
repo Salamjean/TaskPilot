@@ -3,7 +3,7 @@
         height: var(--navbar-h);
         background: #fff;
         border-bottom: 1px solid var(--border);
-        padding: 0 28px;
+        padding: 0 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -11,6 +11,35 @@
         top: 0;
         z-index: 100;
         box-shadow: 0 1px 4px rgba(0, 0, 0, .04);
+    }
+
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .burger-btn {
+        display: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #6B7280;
+    }
+
+    @media (max-width: 1024px) {
+        .burger-btn {
+            display: flex;
+        }
+
+        .navbar-title {
+            display: none;
+        }
     }
 
     .navbar-title {
@@ -67,12 +96,18 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 6px 10px 6px 6px;
+        padding: 6px;
         border-radius: 12px;
         border: 1px solid var(--border);
         background: var(--bg);
         cursor: pointer;
         transition: background .18s, border-color .18s;
+    }
+
+    @media (min-width: 640px) {
+        .profile-btn {
+            padding-right: 12px;
+        }
     }
 
     .profile-btn:hover {
@@ -96,6 +131,13 @@
 
     .profile-info {
         line-height: 1.2;
+        display: none;
+    }
+
+    @media (min-width: 640px) {
+        .profile-info {
+            display: block;
+        }
     }
 
     .profile-name {
@@ -113,6 +155,13 @@
     .profile-chevron {
         color: #9CA3AF;
         transition: transform .2s;
+        display: none;
+    }
+
+    @media (min-width: 640px) {
+        .profile-chevron {
+            display: block;
+        }
     }
 
     .profile-btn.open .profile-chevron {
@@ -204,7 +253,14 @@
 </style>
 
 <nav class="navbar">
-    <span class="navbar-title">@yield('page-title', 'Tableau de bord')</span>
+    <div class="navbar-left">
+        <button class="burger-btn" onclick="toggleSidebar()" aria-label="Menu burger">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <span class="navbar-title">@yield('page-title', 'Tableau de bord')</span>
+    </div>
     <div class="navbar-right">
 
         {{-- Notifications --}}

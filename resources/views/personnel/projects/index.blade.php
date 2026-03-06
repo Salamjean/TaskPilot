@@ -10,6 +10,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .tk-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         .tk-grid {
