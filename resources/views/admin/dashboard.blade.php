@@ -952,6 +952,9 @@
                         <div style="flex:1;min-width:0;">
                             <div class="adb-proj-name">{{ $project->name }}</div>
                             <div class="adb-proj-sub">{{ $project->company }} · {{ $t }} tâche{{ $t > 1 ? 's' : '' }}</div>
+                            @if($project->type)
+                                <div class="pt-type">{{ $project->type }}</div>
+                            @endif
                             <div class="adb-mini-bar">
                                 <div class="adb-mini-fill" style="width:{{ $p }}%;"></div>
                             </div>

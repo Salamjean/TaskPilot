@@ -7,8 +7,8 @@
 
     <style>
         /* ═══════════════════════════════════════════════════
-       RESPONSABLE DASHBOARD — Thème Ambre / Gold
-    ═══════════════════════════════════════════════════ */
+           RESPONSABLE DASHBOARD — Thème Ambre / Gold
+        ═══════════════════════════════════════════════════ */
         :root {
             --ra: #B45309;
             /* ambre principal */
@@ -428,6 +428,19 @@
         .rdb-proj-sub {
             font-size: .74rem;
             color: #9CA3AF;
+        }
+
+        .pt-type {
+            font-size: .73rem;
+            color: var(--secondary);
+            background: #EFF6FF;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
+            border: 1px solid #DBEAFE;
+            margin-top: 4px;
         }
 
         .rdb-proj-pct {
@@ -1026,6 +1039,9 @@
                         <div style="flex:1;min-width:0;">
                             <div class="rdb-proj-name">{{ $project->name }}</div>
                             <div class="rdb-proj-sub">{{ $project->company }} · {{ $t }} tâche{{ $t > 1 ? 's' : '' }}</div>
+                            @if($project->type)
+                                <div class="pt-type">{{ $project->type }}</div>
+                            @endif
                             <div class="rdb-mini-bar">
                                 <div class="rdb-mini-fill" style="width:{{ $p }}%;"></div>
                             </div>
@@ -1074,7 +1090,8 @@
                             </div>
                             <div class="rdb-perf-track">
                                 <div class="rdb-perf-fill"
-                                    style="width:{{ $maxDone > 0 ? round(($member->done_tasks / $maxDone) * 100) : 0 }}%;"></div>
+                                    style="width:{{ $maxDone > 0 ? round(($member->done_tasks / $maxDone) * 100) : 0 }}%;">
+                                </div>
                             </div>
                         </div>
                         <div class="rdb-perf-val">{{ $member->done_tasks }} <span
@@ -1120,7 +1137,8 @@
                             <div class="rdb-late-title">{{ $task->title }}</div>
                             <div class="rdb-late-sub">{{ $task->project->name ?? '—' }} ·
                                 {{ $task->assignee->prenom ?? 'Non assigné' }} · <span
-                                    style="color:#DC2626;font-weight:700;">{{ $task->due_date->format('d/m/Y') }}</span></div>
+                                    style="color:#DC2626;font-weight:700;">{{ $task->due_date->format('d/m/Y') }}</span>
+                            </div>
                         </div>
                     </div>
                 @empty
@@ -1199,9 +1217,9 @@
                     const div = document.createElement('div');
                     div.className = 'rdb-legend-item';
                     div.innerHTML = `<span class="rdb-legend-dot" style="background:${colors[i]};"></span>
-                                 <span class="rdb-legend-label">${lbl}</span>
-                                 <span class="rdb-legend-val">${values[i]}</span>
-                                 <span class="rdb-legend-pct">&nbsp;${pct}%</span>`;
+                                     <span class="rdb-legend-label">${lbl}</span>
+                                     <span class="rdb-legend-val">${values[i]}</span>
+                                     <span class="rdb-legend-pct">&nbsp;${pct}%</span>`;
                     el.appendChild(div);
                 });
             }

@@ -420,6 +420,19 @@
             margin-top: 2px;
         }
 
+        .pt-type {
+            font-size: .73rem;
+            color: #7E22CE;
+            background: #F3E8FF;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            width: fit-content;
+            font-weight: 600;
+            border: 1px solid #E9D5FF;
+            margin-top: 4px;
+        }
+
         .db-proj-pct {
             font-size: .8rem;
             font-weight: 700;
@@ -920,6 +933,9 @@
                                 <div class="db-proj-name">{{ $project->name }}</div>
                                 <div class="db-proj-sub">{{ $project->company }} · {{ $project->tasks->count() }}
                                     tâche{{ $project->tasks->count() > 1 ? 's' : '' }}</div>
+                                @if($project->type)
+                                    <div class="pt-type">{{ $project->type }}</div>
+                                @endif
                                 <div class="db-mini-bar">
                                     <div class="db-mini-fill" style="width:{{ $pct2 }}%;"></div>
                                 </div>
@@ -965,7 +981,8 @@
                             <div style="flex:1;min-width:0;">
                                 <div class="db-late-title">{{ $task->title }}</div>
                                 <div class="db-late-sub">{{ $task->project->name ?? '—' }} ·
-                                    {{ $task->assignee->prenom ?? 'Non assignée' }}</div>
+                                    {{ $task->assignee->prenom ?? 'Non assignée' }}
+                                </div>
                             </div>
                             <div class="db-late-date">{{ $task->due_date->format('d/m/Y') }}</div>
                         </div>
@@ -1051,9 +1068,9 @@
                     const div = document.createElement('div');
                     div.className = 'db-legend-item';
                     div.innerHTML = `<span class="db-legend-dot" style="background:${colors[i]};"></span>
-                                 <span class="db-legend-label">${label}</span>
-                                 <span class="db-legend-val">${values[i]}</span>
-                                 <span class="db-legend-pct">&nbsp;${pct}%</span>`;
+                                     <span class="db-legend-label">${label}</span>
+                                     <span class="db-legend-val">${values[i]}</span>
+                                     <span class="db-legend-pct">&nbsp;${pct}%</span>`;
                     el.appendChild(div);
                 });
             }
