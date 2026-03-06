@@ -83,12 +83,16 @@
             }
 
             /* Global Table Responsiveness */
-            .pi-table-wrap, .dl-table-wrap, [style*="overflow-x: auto"] {
+            .pi-table-wrap,
+            .dl-table-wrap,
+            [style*="overflow-x: auto"] {
                 -webkit-overflow-scrolling: touch;
             }
-            
+
             /* Global Header Adjustment */
-            .pi-header, .tk-header, .prog-header {
+            .pi-header,
+            .tk-header,
+            .prog-header {
                 flex-direction: column;
                 align-items: flex-start !important;
                 gap: 12px;
@@ -131,7 +135,6 @@
                 Swal.fire({ icon: 'error', title: 'Erreur', text: "{{ session('error') }}", showConfirmButton: true, confirmButtonColor: 'var(--primary)', position: 'center' });
             });
         </script>
-    @endif
     @endif
 
     <script>
