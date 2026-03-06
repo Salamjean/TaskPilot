@@ -74,24 +74,20 @@ class DailyLogController extends Controller
             'linked_task_ids' => $request->linked_task_ids ?? [],
         ];
 
+        $data['file_path'] = $existingLog?->file_path;
+
         // Handle file deletion
-        if ($request->has('delete_file') && $request->delete_file == '1') {
-            if ($existingLog && $existingLog->file_path) {
-                Storage::disk('public')->delete($existingLog->file_path);
-            }
-            $data['file_path'] = null; // Set file_path to null in data for updateOrCreate
+        if ($request->has('delete_file') && $request->delete_file == '1' && $existingLog?->file_path) {
+            Storage::disk('public')->delete($existingLog->file_path);
+            $data['file_path'] = null;
         }
 
         // Handle new file upload
         if ($request->hasFile('file')) {
-            // Delete old file if it exists and is different from the one being uploaded
-            if ($existingLog && $existingLog->file_path) {
+            if ($existingLog?->file_path) {
                 Storage::disk('public')->delete($existingLog->file_path);
             }
             $data['file_path'] = $request->file('file')->store('daily-logs', 'public');
-        } elseif (!isset($data['file_path']) && $existingLog && $existingLog->file_path) {
-            // If no new file is uploaded and no delete_file request, keep the existing file_path
-            $data['file_path'] = $existingLog->file_path;
         }
 
 
