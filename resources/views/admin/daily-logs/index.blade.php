@@ -59,6 +59,108 @@
             text-decoration: none;
         }
 
+        .dl-table-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .dl-date-group {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .dl-date-header {
+            background: #F9FAFB;
+            padding: 16px 24px;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1F2937;
+        }
+
+        .dl-count-badge {
+            margin-left: auto;
+            font-size: .75rem;
+            font-weight: 700;
+            color: #6B7280;
+            background: #F3F4F6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .ts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ts-table th {
+            text-align: left;
+            padding: 14px 24px;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #6B7280;
+            background: #fff;
+            font-weight: 700;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .ts-table td {
+            padding: 16px 24px;
+            vertical-align: middle;
+            border-bottom: 1px solid #F3F4F6;
+            background: #fff;
+        }
+
+        .ts-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ts-table tr:hover td {
+            background: #F9FAFB;
+        }
+
+        .dl-btn-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #F0F4FF;
+            color: var(--primary);
+            border: 1px solid #D1D5DB;
+            border-radius: 10px;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .dl-btn-view:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .ts-table th:nth-child(2),
+            .ts-table td:nth-child(2),
+            .ts-table th:nth-child(3),
+            .ts-table td:nth-child(3),
+            .ts-table th:nth-child(4),
+            .ts-table td:nth-child(4) {
+                display: none;
+            }
+        }
+
         .dl-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -130,21 +232,6 @@
             background: #FAFAFA;
         }
 
-        .dl-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .78rem;
-            font-weight: 700;
-            color: #fff;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
         .dl-preview {
             max-width: 380px;
             white-space: nowrap;
@@ -152,23 +239,6 @@
             text-overflow: ellipsis;
             color: #6B7280;
             font-size: .84rem;
-        }
-
-        .dl-date-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: .78rem;
-            font-weight: 700;
-            color: #2563EB;
-            background: #EFF6FF;
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-
-        .dl-today {
-            color: #047857;
-            background: #ECFDF5;
         }
     </style>
 
@@ -210,120 +280,120 @@
         <a href="{{ route('admin.daily-logs.index') }}" class="dl-filter-reset">Réinitialiser</a>
     </form>
 
-    {{-- Grille de cartes --}}
     @if($logs->isEmpty())
-        <div
-            style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;text-align:center;padding:50px 20px;color:#9CA3AF;box-shadow:0 2px 10px rgba(0,0,0,.04);">
-            <svg width="44" height="44" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"
-                style="margin:0 auto 12px;display:block;color:#D1D5DB;">
-                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
-                <rect x="9" y="3" width="6" height="4" rx="1" />
-            </svg>
-            <p style="font-weight:600;margin-bottom:4px;">Aucun rapport trouvé.</p>
-            <p style="font-size:.83rem;">Modifiez les filtres ou attendez que le personnel soumette ses rapports.</p>
+        <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:20px;border:1px solid #E5E7EB;">
+            <div style="width:64px;height:64px;background:#F3F4F6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#9CA3AF;">
+                <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z" />
+                </svg>
+            </div>
+            <h3 style="font-size:1.1rem;font-weight:700;color:#374151;margin-bottom:8px;">Aucun rapport trouvé</h3>
+            <p style="color:#6B7280;font-size:.9rem;">Aucun collaborateur n'a encore transmis de rapport pour cette période.</p>
         </div>
     @else
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;">
-            @foreach($logs as $log)
-                @php
-                    $tasksCount = is_array($log->linked_task_ids) ? count($log->linked_task_ids) : 0;
-                    $linkedTasks = $tasksCount > 0
-                        ? \App\Models\Task::with('project')
-                            ->whereIn('id', $log->linked_task_ids)
-                            ->get()
-                            ->map(fn($t) => [
-                                'title' => $t->title,
-                                'project' => $t->project->name ?? '—',
-                                'status' => $t->statusLabel(),
-                                'done' => $t->status === 'termine',
-                            ])
-                        : collect();
-                @endphp
-                <div
-                    style="background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.04);border-left:4px solid {{ $log->date->isToday() ? '#047857' : '#2563EB' }};display:flex;flex-direction:column;gap:14px;">
-
-                    {{-- En-tête : avatar + nom + date --}}
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <div class="dl-avatar" style="width:38px;height:38px;font-size:.88rem;">
-                            @if($log->user?->profile_picture)
-                                <img src="{{ Storage::url($log->user->profile_picture) }}"
-                                    style="width:100%;height:100%;object-fit:cover;">
-                            @else
-                                {{ strtoupper(substr($log->user?->prenom ?? '?', 0, 1)) }}
-                            @endif
-                        </div>
-                        <div style="flex:1;min-width:0;">
-                            <div
-                                style="font-weight:700;font-size:.88rem;color:#1F2937;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                {{ $log->user?->prenom }} {{ $log->user?->name }}
-                            </div>
-                            <div style="font-size:.73rem;color:#9CA3AF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                                {{ $log->user?->email }}
-                            </div>
-                        </div>
-                        <span class="dl-date-badge {{ $log->date->isToday() ? 'dl-today' : '' }}"
-                            style="flex-shrink:0;font-size:.72rem;">
-                            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="3" y1="10" x2="21" y2="10" />
-                            </svg>
-                            {{ $log->date->translatedFormat('d M Y') }}
-                            @if($log->date->isToday()) · Aujourd'hui @endif
-                        </span>
+        <div class="dl-table-container">
+            @foreach($groupedLogs as $dateString => $dayLogs)
+                <div class="dl-date-group">
+                    <div class="dl-date-header">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        {{ $dateString }}
+                        <span class="dl-count-badge">{{ $dayLogs->count() }} rapport{{ $dayLogs->count() > 1 ? 's' : '' }}</span>
                     </div>
 
-                    {{-- Aperçu du contenu --}}
-                    <div
-                        style="font-size:.86rem;color:#6B7280;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
-                        {{ $log->content }}
-                    </div>
-
-                    {{-- Pied de carte : tâches + bouton --}}
-                    <div
-                        style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid #F3F4F6;margin-top:auto;">
-                        @if($log->file_path)
-                            <span
-                                style="font-size:.75rem;color:#0369A1;font-weight:700;background:#F0F9FF;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;border:1px solid #E0F2FE;">
-                                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path
-                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a4 4 0 00-5.656-5.656l-6.415 6.414a6 6 0 108.486 8.486L20.5 13" />
-                                </svg>
-                                Pièce jointe
-                            </span>
-                        @endif
-                        @if($tasksCount > 0)
-                            <span
-                                style="font-size:.75rem;color:#047857;font-weight:700;background:#ECFDF5;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;">
-                                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <polyline points="9 11 11 13 15 9" />
-                                    <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
-                                    <rect x="9" y="3" width="6" height="4" rx="1" />
-                                </svg>
-                                {{ $tasksCount }} tâche{{ $tasksCount > 1 ? 's' : '' }} liée{{ $tasksCount > 1 ? 's' : '' }}
-                            </span>
-                        @else
-                            <span style="color:#D1D5DB;font-size:.78rem;">Aucune tâche liée</span>
-                        @endif
-                        <button type="button"
-                            style="display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(30,58,138,.2);"
-                            onclick="showLog({{ json_encode([
-                        'id' => $log->id,
-                        'user' => ($log->user?->prenom ?? '') . ' ' . ($log->user?->name ?? ''),
-                        'date' => $log->date->translatedFormat('d M Y'),
-                        'content' => $log->content,
-                        'tasks' => $linkedTasks->values()->all(),
-                        'file_url' => $log->file_path ? Storage::url($log->file_path) : null,
-                        'is_owner' => $log->user_id === auth()->id(),
-                        'is_today' => $log->date->isToday(),
-                    ]) }})">
-                            <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                <path d="M2 12c0 0 5-8 10-8s10 8 10 8-5 8-10 8-10-8-10-8Z" />
-                            </svg>
-                            Voir le rapport
-                        </button>
+                    <div class="ts-table-wrap">
+                        <table class="ts-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 250px;">Collaborateur</th>
+                                    <th>Description de l'activité</th>
+                                    <th style="width: 150px; text-align: center;">Tâches</th>
+                                    <th style="width: 150px; text-align: center;">Pièce Jointe</th>
+                                    <th style="width: 140px; text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($dayLogs as $log)
+                                    @php
+                                        $linkedTasks = collect($log->linked_task_ids)->map(function($id) {
+                                            $t = \App\Models\Task::find($id);
+                                            return $t ? [
+                                                'title' => $t->title,
+                                                'status' => $t->statusLabel(),
+                                                'done' => $t->status === 'termine',
+                                                'project' => $t->project?->name ?? 'Projet inconnu'
+                                            ] : null;
+                                        })->filter();
+                                        $tasksCount = $linkedTasks->count();
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:12px;">
+                                                <div style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, var(--primary), var(--secondary)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:.85rem; flex-shrink:0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                                    {{ mb_substr($log->user?->prenom ?? '?', 0, 1) }}{{ mb_substr($log->user?->name ?? '?', 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-size:.9rem; font-weight:700; color:#1F2937;">{{ $log->user?->prenom }} {{ $log->user?->name }}</div>
+                                                    <div style="font-size:.72rem; color:#6B7280; text-transform: capitalize;">{{ $log->user?->role }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="font-size:.88rem; color:#4B5563; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                {{ Str::limit($log->content, 80) ?: 'Aucune description textuelle.' }}
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @if($tasksCount > 0)
+                                                <span style="font-size:.75rem;color:#047857;font-weight:700;background:#ECFDF5;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;border:1px solid #D1FAE5;">
+                                                    <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                    {{ $tasksCount }} tâche{{ $tasksCount > 1 ? 's' : '' }}
+                                                </span>
+                                            @else
+                                                <span style="font-size:.75rem;color:#9CA3AF;">-</span>
+                                            @endif
+                                        </td>
+                                        <td style="text-align: center;">
+                                            @if($log->file_path)
+                                                <span style="font-size:.75rem;color:#0369A1;font-weight:700;background:#F0F9FF;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;border:1px solid #E0F2FE;">
+                                                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                        <path d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a4 4 0 00-5.656-5.656l-6.415 6.414a6 6 0 108.486 8.486L20.5 13" />
+                                                    </svg>
+                                                    Fichier join
+                                                </span>
+                                            @else
+                                                <span style="font-size:.75rem;color:#9CA3AF;">Aucun</span>
+                                            @endif
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button type="button" class="dl-btn-view"
+                                                onclick="showLog({{ json_encode([
+                                                    'id' => $log->id,
+                                                    'user' => ($log->user?->prenom ?? '') . ' ' . ($log->user?->name ?? ''),
+                                                    'date' => $log->date->translatedFormat('d M Y'),
+                                                    'content' => $log->content,
+                                                    'tasks' => $linkedTasks->values()->all(),
+                                                    'file_url' => $log->file_path ? Storage::url($log->file_path) : null,
+                                                    'is_owner' => $log->user_id === auth()->id(),
+                                                    'is_today' => $log->date->isToday(),
+                                                ]) }})">
+                                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                Voir
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             @endforeach
@@ -331,7 +401,7 @@
 
         {{-- Pagination --}}
         @if($logs->hasPages())
-            <div style="margin-top:20px;">
+            <div style="margin-top:30px;">
                 {{ $logs->links() }}
             </div>
         @endif

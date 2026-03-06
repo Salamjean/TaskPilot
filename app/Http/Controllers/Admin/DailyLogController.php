@@ -30,14 +30,19 @@ class DailyLogController extends Controller
 
         $logs = $query->paginate(20)->withQueryString();
 
+        // Group logs by date for the table view
+        $groupedLogs = $logs->getCollection()->groupBy(function ($log) {
+            return $log->date->translatedFormat('l d F Y');
+        });
+
         // Tous les utilisateurs qui peuvent avoir des rapports (personnel, admin, responsable)
-        $filterableUsers = User::whereIn('role', ['personnel', 'admin', 'responsable'])
+        $filterableUsers = User::whereIn('role', ['personnel', 'admin', 'responsable', 'prestataire'])
             ->orderBy('prenom')
             ->get();
 
         $personnelUsers = $filterableUsers;
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
-        return view($prefix . '.daily-logs.index', compact('logs', 'filterableUsers', 'personnelUsers'));
+        return view($prefix . '.daily-logs.index', compact('logs', 'groupedLogs', 'filterableUsers', 'personnelUsers'));
     }
 
     /**
@@ -78,6 +83,11 @@ class DailyLogController extends Controller
         ]);
 
         $today = \Illuminate\Support\Carbon::today()->toDateString();
+
+        $existingLog = DailyLog::where('user_id', auth()->id())
+            ->where('date', $today)
+            ->first();
+
         $data = [
             'content' => $request->input('content'),
             'linked_task_ids' => $request->linked_task_ids ?? [],
