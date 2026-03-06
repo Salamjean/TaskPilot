@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DailyLog;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DailyLogController extends Controller
 {
@@ -82,8 +83,29 @@ class DailyLogController extends Controller
             'linked_task_ids' => $request->linked_task_ids ?? [],
         ];
 
+        // Find existing log to handle file deletion/replacement
+        $existingLog = DailyLog::where('user_id', auth()->id())
+            ->where('date', $today)
+            ->first();
+
+        // Handle file deletion
+        if ($request->has('delete_file') && $request->delete_file == '1') {
+            if ($existingLog && $existingLog->file_path) {
+                Storage::disk('public')->delete($existingLog->file_path);
+            }
+            $data['file_path'] = null;
+        }
+
+        // Handle new file upload
         if ($request->hasFile('file')) {
+            // Delete old file if it exists
+            if ($existingLog && $existingLog->file_path) {
+                Storage::disk('public')->delete($existingLog->file_path);
+            }
             $data['file_path'] = $request->file('file')->store('daily-logs', 'public');
+        } elseif (!isset($data['file_path']) && $existingLog && $existingLog->file_path) {
+            // Keep existing file if not deleting or replacing
+            $data['file_path'] = $existingLog->file_path;
         }
 
         $log = DailyLog::updateOrCreate(

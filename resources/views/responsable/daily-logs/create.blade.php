@@ -215,10 +215,45 @@
                             accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
                         <span id="file-name">Cliquez pour joindre un document</span>
                         @if($existingLog && $existingLog->file_path)
-                            <div style="margin-top:10px; color:#B45309;">
-                                Fichier actuel : <a href="{{ Storage::url($existingLog->file_path) }}" target="_blank"
-                                    style="color:#B45309;font-weight:700;">Consulter</a>
+                            <div id="existing-file-container"
+                                style="margin-top:20px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div
+                                        style="width: 38px; height: 38px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #B45309; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path
+                                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a4 4 0 00-5.656-5.656l-6.415 6.414a6 6 0 108.486 8.486L20.5 13" />
+                                        </svg>
+                                    </div>
+                                    <div style="text-align: left;">
+                                        <div style="font-size: .84rem; font-weight: 700; color: #1F2937;">Document joint actuel
+                                        </div>
+                                        <a href="{{ Storage::url($existingLog->file_path) }}" target="_blank"
+                                            style="font-size: .78rem; color: #B45309; font-weight: 600; text-decoration: none;">Consulter
+                                            le fichier</a>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeExistingFile(event)"
+                                    style="background: #FEE2E2; border: none; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #EF4444; cursor: pointer; transition: all 0.2s;">
+                                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                                <input type="hidden" name="delete_file" id="delete_file_input" value="0">
                             </div>
+
+                            <script>
+                                function removeExistingFile(e) {
+                                    e.stopPropagation();
+                                    if (confirm('Êtes-vous sûr de vouloir supprimer cette pièce jointe ?')) {
+                                        document.getElementById('existing-file-container').style.display = 'none';
+                                        document.getElementById('delete_file_input').value = '1';
+                                    }
+                                }
+                            </script>
                         @endif
                     </div>
                 </div>
