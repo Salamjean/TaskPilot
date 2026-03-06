@@ -257,45 +257,49 @@
             let tasksHtml = '';
             if (log.tasks && log.tasks.length > 0) {
                 tasksHtml = `<div style="margin-top:15px;">
-                                    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
-                                    <div style="display:flex;flex-direction:column;gap:6px;">`;
+                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
+                                        <div style="display:flex;flex-direction:column;gap:6px;">`;
                 log.tasks.forEach(t => {
                     let badge = t.done
                         ? `<span style="font-size:.7rem;font-weight:700;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:20px;">✓ Terminée</span>`
                         : `<span style="font-size:.7rem;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:20px;">${t.status}</span>`;
                     tasksHtml += `<div style="display:flex;align-items:center;justify-content:space-between;background:#F9FAFB;padding:8px 12px;border-radius:10px;border:1px solid #E5E7EB;">
-                                        <div>
-                                            <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
-                                            <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
-                                        </div>
-                                        ${badge}
-                                    </div>`;
+                                            <div>
+                                                <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
+                                                <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
+                                            </div>
+                                            ${badge}
+                                        </div>`;
                 });
                 tasksHtml += `</div></div>`;
             }
 
             let fileHtml = '';
             if (log.file_url) {
-                fileHtml = `<div style="margin-top:15px; border-top:1px dashed #E5E7EB; padding-top:15px;">
-                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
-                                        <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:10px;background:#F0FDF4;padding:10px 14px;border-radius:10px;border:1px solid #A7F3D0;text-decoration:none;transition:transform .15s;">
-                                            <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,.04);">
-                                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#047857" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
-                                            </div>
-                                            <span style="font-size:.85rem;color:#047857;font-weight:700;">Consulter le document joint</span>
-                                        </a>
-                                    </div>`;
+                fileHtml = `<div style="margin-top:16px; border-top:1px dashed #E5E7EB; padding-top:16px;">
+                                    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
+                                    <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#F0FDF4;padding:12px 16px;border-radius:12px;border:1px solid #A7F3D0;text-decoration:none;transition:transform .15s;">
+                                        <div style="width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.05);color:#047857;">
+                                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
+                                        </div>
+                                        <div style="flex:1;">
+                                            <div style="font-size:.88rem;color:#047857;font-weight:700;">Consulter le document joint</div>
+                                            <div style="font-size:.72rem;color:#059669;opacity:.8;">Ouvrir dans un nouvel onglet</div>
+                                        </div>
+                                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#047857" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                    </a>
+                                </div>`;
             }
 
             Swal.fire({
                 title: `📅 ${log.date}`,
                 html: `
-                                    <div style="text-align:left;margin-top:10px;">
-                                        <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucune description textuelle. Voir pièce jointe.</i>'}</div>
-                                        ${fileHtml}
-                                        ${tasksHtml}
-                                    </div>
-                                `,
+                                        <div style="text-align:left;margin-top:10px;">
+                                            <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucune description textuelle. Voir pièce jointe.</i>'}</div>
+                                            ${fileHtml}
+                                            ${tasksHtml}
+                                        </div>
+                                    `,
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: { popup: 'swal-wide', title: 'swal-log-title' },
