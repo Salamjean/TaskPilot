@@ -34,8 +34,9 @@ class DailyLogController extends Controller
             ->orderBy('prenom')
             ->get();
 
+        $personnelUsers = $filterableUsers;
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
-        return view($prefix . '.daily-logs.index', compact('logs', 'filterableUsers'));
+        return view($prefix . '.daily-logs.index', compact('logs', 'filterableUsers', 'personnelUsers'));
     }
 
     /**
