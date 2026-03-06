@@ -247,7 +247,9 @@
                         'date' => $log->date->isoFormat('dddd D MMMM Y'),
                         'content' => $log->content,
                         'tasks' => $linkedTasksData,
+                        'id' => $log->id,
                         'file_url' => $fileUrl,
+                        'is_today' => $log->date->isToday(),
                     ]) }})">
                             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -267,19 +269,19 @@
             let tasksHtml = '';
             if (log.tasks && log.tasks.length > 0) {
                 tasksHtml = `<div style="margin-top:15px;">
-                                            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
-                                            <div style="display:flex;flex-direction:column;gap:6px;">`;
+                                                <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
+                                                <div style="display:flex;flex-direction:column;gap:6px;">`;
                 log.tasks.forEach(t => {
                     let badge = t.done
                         ? `<span style="font-size:.7rem;font-weight:700;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:20px;">✓ Terminée</span>`
                         : `<span style="font-size:.7rem;font-weight:700;color:#D97706;background:#FEF3C7;padding:2px 8px;border-radius:20px;">${t.status}</span>`;
                     tasksHtml += `<div style="display:flex;align-items:center;justify-content:space-between;background:#F9FAFB;padding:8px 12px;border-radius:10px;border:1px solid #E5E7EB;">
-                                                <div>
-                                                    <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
-                                                    <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
-                                                </div>
-                                                ${badge}
-                                            </div>`;
+                                                    <div>
+                                                        <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
+                                                        <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
+                                                    </div>
+                                                    ${badge}
+                                                </div>`;
                 });
                 tasksHtml += `</div></div>`;
             }
@@ -287,33 +289,84 @@
             let fileHtml = '';
             if (log.file_url) {
                 fileHtml = `<div style="margin-top:16px; border-top:1px dashed #E5E7EB; padding-top:16px;">
-                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
-                                        <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#F0FDF4;padding:12px 16px;border-radius:12px;border:1px solid #A7F3D0;text-decoration:none;transition:transform .15s;">
-                                            <div style="width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.05);color:#047857;">
-                                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
-                                            </div>
-                                            <div style="flex:1;">
-                                                <div style="font-size:.88rem;color:#047857;font-weight:700;">Consulter le document joint</div>
-                                                <div style="font-size:.72rem;color:#059669;opacity:.8;">Ouvrir dans un nouvel onglet</div>
-                                            </div>
-                                            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#047857" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                                        </a>
-                                    </div>`;
+                                            <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Pièce jointe</div>
+                                            <a href="${log.file_url}" target="_blank" style="display:flex;align-items:center;gap:12px;background:#F0FDF4;padding:12px 16px;border-radius:12px;border:1px solid #A7F3D0;text-decoration:none;transition:transform .15s;">
+                                                <div style="width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.05);color:#047857;">
+                                                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
+                                                </div>
+                                                 <div style="flex:1;">
+                                                     <div style="font-size:.88rem;color:#047857;font-weight:700;">Consulter le document joint</div>
+                                                     <div style="font-size:.72rem;color:#059669;opacity:.8;">Ouvrir dans un nouvel onglet</div>
+                                                 </div>
+                                                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#047857" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                             </a>
+                                             ${log.is_today ? `
+                                                 <button type="button" onclick="deleteAttachment(${log.id})" style="margin-top:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:#FEF2F2;color:#EF4444;border:1px solid #FEE2E2;border-radius:10px;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;">
+                                                     <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                     Supprimer la pièce jointe
+                                                 </button>
+                                             ` : ''}
+                                         </div>`;
             }
 
             Swal.fire({
                 title: `📅 ${log.date}`,
                 html: `
-                                            <div style="text-align:left;margin-top:10px;">
-                                                <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucune description textuelle. Voir pièce jointe.</i>'}</div>
-                                                ${fileHtml}
-                                                ${tasksHtml}
-                                            </div>
-                                        `,
+                                                <div style="text-align:left;margin-top:10px;">
+                                                    <div style="background:#F9FAFB;border-radius:12px;border:1px solid #E5E7EB;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content || '<i style="color:#9CA3AF;">Aucune description textuelle. Voir pièce jointe.</i>'}</div>
+                                                    ${fileHtml}
+                                                    ${tasksHtml}
+                                                </div>
+                                            `,
                 showCloseButton: true,
                 showConfirmButton: false,
-                customClass: { popup: 'swal-wide', title: 'swal-log-title' },
                 width: '580px'
+            });
+        }
+
+        function deleteAttachment(logId) {
+            Swal.fire({
+                title: 'Supprimer la pièce jointe ?',
+                text: "Cette action est irréversible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('_token', '{{ csrf_token() }}');
+                    formData.append('delete_file', '1');
+
+                    fetch(`{{ url('/personnel/daily-logs') }}`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Supprimé !',
+                                    text: 'La pièce jointe a été supprimée.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                throw new Error('Erreur lors de la suppression');
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire('Erreur', 'Impossible de supprimer le fichier.', 'error');
+                        });
+                }
             });
         }
     </script>
