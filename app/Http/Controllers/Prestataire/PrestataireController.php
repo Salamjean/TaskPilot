@@ -121,7 +121,12 @@ class PrestataireController extends Controller
 
     public function showTasks(Project $project)
     {
-        $project->load('tasks.assignee');
+        $project->load([
+            'tasks' => function ($query) {
+                $query->orderBy('due_date', 'asc');
+            },
+            'tasks.assignee'
+        ]);
         return view('prestataire.tasks.show', compact('project'));
     }
 

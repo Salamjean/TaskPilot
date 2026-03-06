@@ -32,7 +32,7 @@ class ProjectController extends Controller
         // On charge uniquement les tâches assignées à l'utilisateur ciblé
         $project->load([
             'tasks' => function ($query) {
-                $query->where('assigned_to', auth()->id());
+                $query->where('assigned_to', auth()->id())->orderBy('due_date', 'asc');
             },
             'members'
         ]);

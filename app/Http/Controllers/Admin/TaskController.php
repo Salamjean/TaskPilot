@@ -28,7 +28,13 @@ class TaskController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['tasks.assignee', 'members']);
+        $project->load([
+            'tasks' => function ($query) {
+                $query->orderBy('due_date', 'asc');
+            },
+            'tasks.assignee',
+            'members'
+        ]);
         $users = $project->members()->orderBy('prenom')->get();
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
         return view($prefix . '.tasks.show', compact('project', 'users'));
