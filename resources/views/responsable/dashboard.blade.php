@@ -7,8 +7,8 @@
 
     <style>
         /* ═══════════════════════════════════════════════════
-           RESPONSABLE DASHBOARD — Thème Ambre / Gold
-        ═══════════════════════════════════════════════════ */
+               RESPONSABLE DASHBOARD — Thème Ambre / Gold
+            ═══════════════════════════════════════════════════ */
         :root {
             --ra: #B45309;
             /* ambre principal */
@@ -38,6 +38,24 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 14px 44px rgba(180, 83, 9, .30);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .rdb-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+                gap: 24px;
+            }
+
+            .rdb-banner-meta {
+                justify-content: center;
+            }
+
+            .rdb-banner-icon {
+                order: -1;
+            }
         }
 
         .rdb-banner::before {
@@ -116,8 +134,14 @@
         /* ── KPI ── */
         .rdb-kpi-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .rdb-kpi-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         .rdb-kpi {
@@ -312,7 +336,7 @@
             gap: 20px;
         }
 
-        @media(max-width:1000px) {
+        @media(max-width:1024px) {
             .rdb-three {
                 grid-template-columns: 1fr 1fr;
             }
@@ -322,11 +346,17 @@
             }
         }
 
-        @media(max-width:700px) {
+        @media(max-width:768px) {
 
             .rdb-two,
             .rdb-three {
                 grid-template-columns: 1fr;
+            }
+
+            .rdb-card-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
             }
         }
 
@@ -1217,9 +1247,9 @@
                     const div = document.createElement('div');
                     div.className = 'rdb-legend-item';
                     div.innerHTML = `<span class="rdb-legend-dot" style="background:${colors[i]};"></span>
-                                     <span class="rdb-legend-label">${lbl}</span>
-                                     <span class="rdb-legend-val">${values[i]}</span>
-                                     <span class="rdb-legend-pct">&nbsp;${pct}%</span>`;
+                                         <span class="rdb-legend-label">${lbl}</span>
+                                         <span class="rdb-legend-val">${values[i]}</span>
+                                         <span class="rdb-legend-pct">&nbsp;${pct}%</span>`;
                     el.appendChild(div);
                 });
             }

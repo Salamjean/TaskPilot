@@ -6,7 +6,7 @@
         height: var(--navbar-h);
         background: #fff;
         border-bottom: 1px solid var(--border);
-        padding: 0 28px;
+        padding: 0 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -127,6 +127,55 @@
         transform: rotate(180deg);
     }
 
+    /* Burger menu mobile */
+    .nav-toggle {
+        display: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text);
+        margin-right: 12px;
+    }
+
+    @media (max-width: 1024px) {
+        .navbar {
+            padding: 0 16px;
+        }
+
+        .nav-toggle {
+            display: flex;
+        }
+
+        .navbar-title {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .nav-divider {
+            display: none;
+        }
+
+        .profile-role {
+            display: none;
+        }
+
+        .profile-btn {
+            padding: 4px;
+        }
+
+        .profile-info {
+            display: none;
+        }
+    }
+
     /* Dropdown menu */
     .profile-dropdown {
         position: absolute;
@@ -227,8 +276,17 @@
 </style>
 
 <nav class="navbar">
-    {{-- Titre de la page courante --}}
-    <span class="navbar-title">@yield('page-title', 'Tableau de bord')</span>
+    <div style="display: flex; align-items: center;">
+        {{-- Toggle Sidebar Mobile --}}
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Menu">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        {{-- Titre de la page courante --}}
+        <span class="navbar-title">@yield('page-title', 'Tableau de bord')</span>
+    </div>
 
     {{-- Droite : actions + profil --}}
     <div class="navbar-right">

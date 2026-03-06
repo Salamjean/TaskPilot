@@ -13,6 +13,17 @@
         flex-direction: column;
         z-index: 200;
         box-shadow: 4px 0 20px rgba(0, 0, 0, .12);
+        transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 1024px) {
+        .sidebar {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
     }
 
     .sidebar-logo {
@@ -134,7 +145,7 @@
     }
 </style>
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
     <a href="{{ route('responsable.dashboard') }}" class="sidebar-logo">
         <div class="sidebar-logo-icon">
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
@@ -147,6 +158,15 @@
             <div class="sidebar-logo-sub">Espace Responsable</div>
         </div>
     </a>
+
+    {{-- Bouton fermer mobile --}}
+    <button onclick="toggleSidebar()"
+        style="position:absolute; top:15px; right:15px; background:rgba(255,255,255,.1); border:none; border-radius:8px; padding:6px; color:#fff; cursor:pointer;"
+        class="lg:hidden" title="Fermer">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+    </button>
 
     <nav class="sidebar-nav">
         <div class="sidebar-section-label">Navigation</div>

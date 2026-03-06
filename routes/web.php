@@ -160,8 +160,10 @@ Route::prefix('responsable')->name('responsable.')->middleware(['auth', 'role:re
         Route::delete('/task/{task}', [TaskController::class, 'destroy'])->name('destroy');
     });
 
-    // Daily Logs: Read-only
+    // Daily Logs
     Route::get('/daily-logs', [AdminDailyLogController::class, 'index'])->name('daily-logs.index');
+    Route::get('/daily-logs/create', [AdminDailyLogController::class, 'create'])->name('daily-logs.create');
+    Route::post('/daily-logs', [AdminDailyLogController::class, 'store'])->name('daily-logs.store');
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');

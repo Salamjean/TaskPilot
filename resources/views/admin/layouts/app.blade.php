@@ -49,12 +49,53 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
         }
 
         /* ── Contenu de la page ── */
         .page-content {
             padding: 32px;
             flex: 1;
+        }
+
+        /* ── Mobile Overlay ── */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 150;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .app-body {
+                margin-left: 0;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+
+            /* Global Table Responsiveness */
+            .pi-table-wrap, .dl-table-wrap, [style*="overflow-x: auto"] {
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Global Header Adjustment */
+            .pi-header, .tk-header, .prog-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
         }
 
         @stack('styles')
@@ -67,12 +108,13 @@
 <body>
 
     <div class="app-wrapper">
+        {{-- Overlay pour mobile --}}
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         {{-- Sidebar --}}
         @include('admin.layouts.sidebar')
 
         <div class="app-body">
-
             {{-- Navbar --}}
             @include('admin.layouts.navbar')
 
@@ -80,7 +122,6 @@
             <main class="page-content">
                 @yield('content')
             </main>
-
         </div>
     </div>
 
@@ -116,6 +157,19 @@
             });
         </script>
     @endif
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+        }
+
+        document.getElementById('sidebarOverlay')?.addEventListener('click', toggleSidebar);
+    </script>
 </body>
 
 </html>

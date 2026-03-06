@@ -60,9 +60,15 @@
 
         .dl-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
             margin-bottom: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .dl-stats {
+                grid-template-columns: 1fr;
+            }
         }
 
         .dl-stat {
@@ -171,7 +177,7 @@
             <p style="font-size:.83rem;">Modifiez les filtres ou attendez que le personnel soumette ses rapports.</p>
         </div>
     @else
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;">
+        <div class="dl-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;">
             @foreach($logs as $log)
                 @php
                     $tasksCount = is_array($log->linked_task_ids) ? count($log->linked_task_ids) : 0;
@@ -283,19 +289,19 @@
             let tasksHtml = '';
             if (log.tasks && log.tasks.length > 0) {
                 tasksHtml = `<div style="margin-top:16px;">
-                                    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
-                                    <div style="display:flex;flex-direction:column;gap:6px;">`;
+                                        <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;color:#6B7280;letter-spacing:.5px;margin-bottom:8px;">Tâches liées</div>
+                                        <div style="display:flex;flex-direction:column;gap:6px;">`;
                 log.tasks.forEach(t => {
                     let badge = t.done
                         ? `<span style="font-size:.7rem;font-weight:700;color:#059669;background:#ECFDF5;padding:2px 8px;border-radius:20px;">✓ Terminée</span>`
                         : `<span style="font-size:.7rem;font-weight:700;color:#D97706;background:#FFFBEB;padding:2px 8px;border-radius:20px;">${t.status}</span>`;
                     tasksHtml += `<div style="display:flex;align-items:center;justify-content:space-between;background:#FFFBEB;padding:8px 12px;border-radius:10px;border:1px solid #FEF3C7;">
-                                        <div>
-                                            <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
-                                            <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
-                                        </div>
-                                        ${badge}
-                                    </div>`;
+                                            <div>
+                                                <div style="font-size:.85rem;font-weight:600;color:#1F2937;">${t.title}</div>
+                                                <div style="font-size:.73rem;color:#9CA3AF;">${t.project}</div>
+                                            </div>
+                                            ${badge}
+                                        </div>`;
                 });
                 tasksHtml += `</div></div>`;
             }
@@ -303,11 +309,11 @@
             Swal.fire({
                 title: `<span style="font-size:.85rem;color:#6B7280;font-weight:600;">${log.user}</span><br><span style="font-size:1rem;">📅 ${log.date}</span>`,
                 html: `
-                                    <div style="text-align:left;">
-                                        <div style="background:#FFFBEB;border-radius:12px;border:1px solid #FEF3C7;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content}</div>
-                                        ${tasksHtml}
-                                    </div>
-                                `,
+                                        <div style="text-align:left;">
+                                            <div style="background:#FFFBEB;border-radius:12px;border:1px solid #FEF3C7;padding:16px;white-space:pre-wrap;font-size:.9rem;color:#374151;line-height:1.7;">${log.content}</div>
+                                            ${tasksHtml}
+                                        </div>
+                                    `,
                 showCloseButton: true,
                 showConfirmButton: false,
                 customClass: { popup: 'swal-dl-wide', title: 'swal-dl-title' },

@@ -172,6 +172,22 @@
             border-radius: 50%;
             flex-shrink: 0;
         }
+
+        @media (max-width: 768px) {
+            .prog-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .prog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prog-card-top {
+                flex-wrap: wrap;
+            }
+        }
     </style>
 
     <div class="prog-header">

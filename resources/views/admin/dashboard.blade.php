@@ -20,8 +20,8 @@
 
     <style>
         /* ══════════════════════════════════════════════
-       ADMIN DASHBOARD — Design System
-    ══════════════════════════════════════════════ */
+           ADMIN DASHBOARD — Design System
+        ══════════════════════════════════════════════ */
         .adb-grid {
             display: grid;
             gap: 22px;
@@ -164,12 +164,18 @@
         @foreach(['blue:#2563EB:#DBEAFE', 'green:#059669:#DCFCE7', 'indigo:#4F46E5:#EEF2FF', 'amber:#D97706:#FEF3C7', 'red:#DC2626:#FEF2F2', 'cyan:#0891B2:#CFFAFE', 'purple:#7E22CE:#F3E8FF', 'emerald:#059669:#ECFDF5'] as $def)
             @php [$cls, $col, $bg] = explode(':', $def); @endphp
             .adb-kpi.{{$cls}}::after {
-                background: {{$col}};
+                background:
+                    {{$col}}
+                ;
             }
 
             .adb-kpi-icon.{{$cls}} {
-                background: {{$bg}};
-                color: {{$col}};
+                background:
+                    {{$bg}}
+                ;
+                color:
+                    {{$col}}
+                ;
             }
 
         @endforeach .adb-kpi-icon {
@@ -234,7 +240,9 @@
         .adb-prog-pct {
             font-size: 1.6rem;
             font-weight: 800;
-            color: {{ $accentColor }};
+            color:
+                {{ $accentColor }}
+            ;
         }
 
         .adb-prog-track {
@@ -248,7 +256,11 @@
         .adb-prog-fill {
             height: 100%;
             border-radius: 999px;
-            background: linear-gradient(90deg, {{ $accentColor }}, {{ $isResponsable ? '#F59E0B' : '#60A5FA' }});
+            background: linear-gradient(90deg,
+                    {{ $accentColor }}
+                    ,
+                    {{ $isResponsable ? '#F59E0B' : '#60A5FA' }}
+                );
         }
 
         .adb-prog-chips {
@@ -333,7 +345,9 @@
 
         .adb-card-link {
             font-size: .76rem;
-            color: {{ $accentColor }};
+            color:
+                {{ $accentColor }}
+            ;
             font-weight: 600;
             text-decoration: none;
             display: flex;
@@ -367,13 +381,17 @@
             width: 38px;
             height: 38px;
             border-radius: 10px;
-            background: {{ $accentLight }};
+            background:
+                {{ $accentLight }}
+            ;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: .92rem;
             font-weight: 800;
-            color: {{ $accentColor }};
+            color:
+                {{ $accentColor }}
+            ;
             flex-shrink: 0;
             overflow: hidden;
         }
@@ -401,7 +419,9 @@
         .adb-proj-pct {
             font-size: .82rem;
             font-weight: 700;
-            color: {{ $accentColor }};
+            color:
+                {{ $accentColor }}
+            ;
             flex-shrink: 0;
         }
 
@@ -416,7 +436,11 @@
         .adb-mini-fill {
             height: 100%;
             border-radius: 99px;
-            background: linear-gradient(90deg, {{ $accentColor }}, {{ $isResponsable ? '#F59E0B' : '#60A5FA' }});
+            background: linear-gradient(90deg,
+                    {{ $accentColor }}
+                    ,
+                    {{ $isResponsable ? '#F59E0B' : '#60A5FA' }}
+                );
         }
 
         /* ── Late tasks ── */
@@ -499,7 +523,11 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, {{ $accentColor }}, {{ $isResponsable ? '#F59E0B' : '#60A5FA' }});
+            background: linear-gradient(135deg,
+                    {{ $accentColor }}
+                    ,
+                    {{ $isResponsable ? '#F59E0B' : '#60A5FA' }}
+                );
             display: flex;
             align-items: center;
             justify-content: center;
@@ -534,7 +562,9 @@
         .adb-log-date {
             font-size: .72rem;
             font-weight: 600;
-            color: {{ $accentColor }};
+            color:
+                {{ $accentColor }}
+            ;
             flex-shrink: 0;
         }
 
@@ -639,8 +669,34 @@
             animation-delay: .28s;
         }
 
-        .adb-kpi:nth-child(8) {
-            animation-delay: .32s;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .adb-banner {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 20px;
+                padding: 24px 20px !important;
+            }
+
+            .adb-banner-icon {
+                display: none;
+            }
+
+            .adb-kpi-row {
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+            .adb-banner-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .adb-kpi-row {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 
@@ -997,7 +1053,8 @@
                         <div style="flex:1;min-width:0;">
                             <div class="adb-late-title">{{ $task->title }}</div>
                             <div class="adb-late-sub">{{ $task->project->name ?? '—' }} ·
-                                {{ $task->assignee->prenom ?? 'Non assigné' }}</div>
+                                {{ $task->assignee->prenom ?? 'Non assigné' }}
+                            </div>
                         </div>
                         <div class="adb-late-date">{{ $task->due_date->format('d/m/Y') }}</div>
                     </div>
@@ -1083,9 +1140,9 @@
                     const div = document.createElement('div');
                     div.className = 'adb-legend-item';
                     div.innerHTML = `<span class="adb-legend-dot" style="background:${colors[i]};"></span>
-                                 <span class="adb-legend-label">${lbl}</span>
-                                 <span class="adb-legend-val">${values[i]}</span>
-                                 <span class="adb-legend-pct">&nbsp;${pct}%</span>`;
+                                     <span class="adb-legend-label">${lbl}</span>
+                                     <span class="adb-legend-val">${values[i]}</span>
+                                     <span class="adb-legend-pct">&nbsp;${pct}%</span>`;
                     el.appendChild(div);
                 });
             }

@@ -15,6 +15,7 @@
         z-index: 200;
         overflow-y: auto;
         scrollbar-width: none;
+        transition: transform 0.3s ease;
     }
 
     .sidebar::-webkit-scrollbar {
@@ -101,9 +102,46 @@
         height: 18px;
         flex-shrink: 0;
     }
+
+    .sidebar-close {
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+        .sidebar {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-close {
+            display: flex;
+        }
+    }
 </style>
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
+
+    {{-- Bouton fermer mobile --}}
+    <button class="sidebar-close" onclick="toggleSidebar()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width:20px; height:20px;">
+            <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+    </button>
 
     {{-- Logo --}}
     <div class="sidebar-logo">

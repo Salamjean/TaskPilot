@@ -24,6 +24,12 @@
             gap: 20px;
         }
 
+        @media (max-width: 768px) {
+            .prog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .prog-card {
             background: #fff;
             border: 1px solid #E5E7EB;
