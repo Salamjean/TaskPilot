@@ -395,7 +395,7 @@
                                         class="dl-task-status"
                                         onclick="event.preventDefault()">
                                         <option value="en_cours" {{ $task->status === 'en_cours' ? 'selected' : '' }}>⚡ En cours</option>
-                                        <option value="termine">✅ Terminée</option>
+                                        <option value="termine" {{ $task->status === 'termine' ? 'selected' : '' }}>✅ Terminée</option>
                                     </select>
                                 </label>
                             @endforeach

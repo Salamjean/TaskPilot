@@ -35,9 +35,19 @@ class DailyLogController extends Controller
             ->whereDate('date', $today)
             ->first();
 
-        // Tâches assignées à ce personnel (excluant les tâches déjà terminées)
+        $linkedTaskIds = $existingLog ? $existingLog->linked_task_ids : [];
+        if (is_string($linkedTaskIds)) {
+            $linkedTaskIds = json_decode($linkedTaskIds, true) ?? [];
+        }
+
+        // Tâches assignées à ce personnel (excluant les tâches déjà terminées, sauf celles liées au log du jour)
         $tasks = Task::where('assigned_to', auth()->id())
-            ->where('status', '!=', 'termine')
+            ->where(function ($query) use ($linkedTaskIds) {
+                $query->where('status', '!=', 'termine');
+                if (!empty($linkedTaskIds)) {
+                    $query->orWhereIn('id', $linkedTaskIds);
+                }
+            })
             ->with('project')
             ->orderBy('due_date')
             ->get();
