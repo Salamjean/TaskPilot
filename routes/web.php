@@ -8,12 +8,14 @@ use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Personnel\AttendanceController;
 use App\Http\Controllers\Personnel\DailyLogController as PersonnelDailyLogController;
+use App\Http\Controllers\Personnel\PermissionController as PersonnelPermissionController;
 use App\Http\Controllers\Personnel\PersonnelController;
 use App\Http\Controllers\Personnel\ProjectController as PersonnelProjectController;
 use App\Http\Controllers\Prestataire\PrestataireController;
 use App\Http\Controllers\Responsable\ResponsableController;
 use App\Http\Controllers\User\UserAuthenticate;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Admin\PermissionManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -101,6 +103,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin,responsa
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+
+    // Gestion des permissions
+    Route::get('/permissions', [PermissionManagementController::class, 'index'])->name('permissions.index');
+    Route::patch('/permissions/{permission}/status', [PermissionManagementController::class, 'updateStatus'])->name('permissions.status');
 });
 
 /*
@@ -129,6 +135,14 @@ Route::prefix('personnel')->name('personnel.')->middleware(['auth', 'role:person
             Route::get('/', [PersonnelDailyLogController::class, 'index'])->name('index');
             Route::get('/create', [PersonnelDailyLogController::class, 'create'])->name('create');
             Route::post('/', [PersonnelDailyLogController::class, 'store'])->name('store');
+        });
+
+        // Demandes de permission
+        Route::prefix('permissions')->name('permissions.')->group(function () {
+            Route::get('/', [PersonnelPermissionController::class, 'index'])->name('index');
+            Route::get('/create', [PersonnelPermissionController::class, 'create'])->name('create');
+            Route::post('/', [PersonnelPermissionController::class, 'store'])->name('store');
+            Route::delete('/{permission}', [PersonnelPermissionController::class, 'destroy'])->name('destroy');
         });
     });
 });
@@ -169,6 +183,10 @@ Route::prefix('responsable')->name('responsable.')->middleware(['auth', 'role:re
 
     // Pointages
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+
+    // Gestion des permissions
+    Route::get('/permissions', [PermissionManagementController::class, 'index'])->name('permissions.index');
+    Route::patch('/permissions/{permission}/status', [PermissionManagementController::class, 'updateStatus'])->name('permissions.status');
 });
 
 /*
@@ -193,4 +211,7 @@ Route::prefix('prestataire')->name('prestataire.')->middleware(['auth', 'role:pr
 
     // Utilisateurs (lecture seule)
     Route::get('/users', [PrestataireController::class, 'users'])->name('users.index');
+
+    // Permissions (lecture seule)
+    Route::get('/permissions', [PrestataireController::class, 'permissions'])->name('permissions.index');
 });

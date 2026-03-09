@@ -60,4 +60,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(DailyLog::class);
     }
+
+    /**
+     * Demandes de permission de cet utilisateur.
+     */
+    public function permissions(): HasMany
+    {
+        return $this->hasMany(Permission::class);
+    }
 }

@@ -1104,62 +1104,88 @@
         <script>
             function handleClockOut() {
                 Swal.fire({
-                    title: 'Localisation en cours...',
-                    text: 'Veuillez patienter pendant que nous récupérons votre position GPS pour valider le départ.',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(
-                                function (position) {
-                                    document.getElementById('out_latitude').value = position.coords.latitude;
-                                    document.getElementById('out_longitude').value = position.coords.longitude;
+                    title: 'Confirmer le départ ?',
+                    text: 'Êtes-vous sûr de vouloir enregistrer votre heure de départ maintenant ?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#B45309',
+                    cancelButtonColor: '#6B7280',
+                    confirmButtonText: 'Oui, pointer mon départ',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Localisation en cours...',
+                            text: 'Veuillez patienter pendant que nous récupérons votre position GPS pour valider le départ.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(
+                                        function (position) {
+                                            document.getElementById('out_latitude').value = position.coords.latitude;
+                                            document.getElementById('out_longitude').value = position.coords.longitude;
+                                            document.getElementById('clock-out-form').submit();
+                                        },
+                                        function (error) {
+                                            document.getElementById('clock-out-form').submit();
+                                        },
+                                        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                                    );
+                                } else {
                                     document.getElementById('clock-out-form').submit();
-                                },
-                                function (error) {
-                                    document.getElementById('clock-out-form').submit();
-                                },
-                                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-                            );
-                        } else {
-                            document.getElementById('clock-out-form').submit();
-                        }
+                                }
+                            }
+                        });
                     }
                 });
             }
 
             function handleClockIn() {
                 Swal.fire({
-                    title: 'Localisation en cours...',
-                    text: 'Veuillez patienter pendant que nous récupérons votre position GPS pour valider le pointage.',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(
-                                function (position) {
-                                    document.getElementById('latitude').value = position.coords.latitude;
-                                    document.getElementById('longitude').value = position.coords.longitude;
-                                    document.getElementById('clock-in-form').submit();
-                                },
-                                function (error) {
+                    title: 'Confirmer l\'arrivée ?',
+                    text: 'Êtes-vous sûr de vouloir enregistrer votre heure d\'arrivée maintenant ?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#047857',
+                    cancelButtonColor: '#6B7280',
+                    confirmButtonText: 'Oui, pointer mon arrivée',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Localisation en cours...',
+                            text: 'Veuillez patienter pendant que nous récupérons votre position GPS pour valider le pointage.',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(
+                                        function (position) {
+                                            document.getElementById('latitude').value = position.coords.latitude;
+                                            document.getElementById('longitude').value = position.coords.longitude;
+                                            document.getElementById('clock-in-form').submit();
+                                        },
+                                        function (error) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Erreur de localisation',
+                                                text: "Impossible de récupérer votre position. Veuillez autoriser l'accès à la localisation.",
+                                                confirmButtonColor: '#047857'
+                                            });
+                                        },
+                                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                                    );
+                                } else {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'Erreur de localisation',
-                                        text: "Impossible de récupérer votre position. Veuillez autoriser l'accès à la localisation.",
+                                        title: 'Non supporté',
+                                        text: 'Votre navigateur ne supporte pas la géolocalisation.',
                                         confirmButtonColor: '#047857'
                                     });
-                                },
-                                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                            );
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Non supporté',
-                                text: 'Votre navigateur ne supporte pas la géolocalisation.',
-                                confirmButtonColor: '#047857'
-                            });
-                        }
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -1167,12 +1193,9 @@
             document.addEventListener('DOMContentLoaded', function () {
                 @if(!$attendance || !$attendance->clock_in)
                     Swal.fire({
-                        title: '<strong>Pointage Obligatoire</strong>',
-                        icon: 'warning',
-                        html:
-                            'Bonjour <b>{{ auth()->user()->prenom }}</b> !<br><br>' +
-                            'Veuillez <b>pointer votre arrivée</b> avant de commencer votre journée. ' +
-                            "L'accès aux tâches et projets est restreint tant que vous n'êtes pas en service.",
+                        title: '<strong>Pointage Requis</strong>',
+                        icon: 'info',
+                        html: 'Veuillez enregistrer votre heure d\'arrivée pour accéder à votre espace de travail.',
                         showCloseButton: false,
                         allowOutsideClick: false,
                         allowEscapeKey: false,
@@ -1181,7 +1204,9 @@
                         backdrop: 'rgba(4, 120, 87, 0.4)',
                         customClass: { popup: 'swal-modern-popup', title: 'swal-modern-title' }
                     }).then((result) => {
-                        if (result.isConfirmed) { handleClockIn(); }
+                        if (result.isConfirmed) {
+                            handleClockIn();
+                        }
                     });
                 @endif
             });

@@ -167,6 +167,35 @@ class PrestataireController extends Controller
         return view('prestataire.users.index', compact('users'));
     }
 
+    // ─── Permissions ────────────────────────────────────────────────────────
+    public function permissions(\Illuminate\Http\Request $request)
+    {
+        $query = \App\Models\Permission::with('user')->orderBy('created_at', 'desc');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('prenom', 'like', "%{$search}%");
+            });
+        }
+        if ($request->filled('date_start')) {
+            $query->whereDate('start_date', '>=', $request->date_start);
+        }
+        if ($request->filled('date_end')) {
+            $query->whereDate('end_date', '<=', $request->date_end);
+        }
+
+        $permissions = $query->get();
+        return view('prestataire.permissions.index', compact('permissions'));
+    }
+
     /**
      * Historique des rapports pour un utilisateur spécifique (pour prestataire).
      */
