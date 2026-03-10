@@ -15,34 +15,46 @@ class DailyLogController extends Controller
      */
     public function index(Request $request)
     {
-        $query = DailyLog::with('user')
-            ->orderByDesc('date');
+        // Tous les utilisateurs qui peuvent avoir des rapports (personnel, admin)
+        $query = User::whereIn('role', ['personnel', 'admin'])
+            ->orderBy('prenom');
 
-        // Filtre par date
-        if ($request->filled('date')) {
-            $query->whereDate('date', $request->date);
-        }
-
-        // Filtre par utilisateur
+        // Filtre par utilisateur spécifique
         if ($request->filled('user_id')) {
-            $query->where('user_id', $request->user_id);
+            $query->where('id', $request->user_id);
         }
 
-        $logs = $query->paginate(20)->withQueryString();
+        // Si une date spécifique est demandée, on ne montre que les utilisateurs ayant un rapport ce jour-là
+        if ($request->filled('date')) {
+            $date = $request->date;
+            $query->whereHas('dailyLogs', function ($q) use ($date) {
+                $q->whereDate('date', $date);
+            });
+            // Et on charge spécifiquement le rapport de cette date comme étant "le dernier" à afficher
+            $query->with([
+                'dailyLogs' => function ($q) use ($date) {
+                    $q->whereDate('date', $date)->orderByDesc('date')->limit(1);
+                }
+            ]);
+        } else {
+            // Sinon, on charge simplement le rapport le plus récent de chaque utilisateur
+            $query->with([
+                'dailyLogs' => function ($q) {
+                    $q->orderByDesc('date')->limit(1);
+                }
+            ]);
+        }
 
-        // Group logs by date for the table view
-        $groupedLogs = $logs->getCollection()->groupBy(function ($log) {
-            return $log->date->translatedFormat('l d F Y');
-        });
+        $personnelList = $query->paginate(20)->withQueryString();
 
-        // Tous les utilisateurs qui peuvent avoir des rapports (personnel, admin, responsable)
-        $filterableUsers = User::whereIn('role', ['personnel', 'admin', 'responsable', 'prestataire'])
+        $filterableUsers = User::whereIn('role', ['personnel', 'admin'])
             ->orderBy('prenom')
             ->get();
 
         $personnelUsers = $filterableUsers;
         $prefix = auth()->user()->role === 'responsable' ? 'responsable' : 'admin';
-        return view($prefix . '.daily-logs.index', compact('logs', 'filterableUsers', 'personnelUsers'));
+
+        return view($prefix . '.daily-logs.index', compact('personnelList', 'filterableUsers', 'personnelUsers'));
     }
 
     /**
